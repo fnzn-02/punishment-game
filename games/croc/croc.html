@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>악어 이빨</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="croc.css">
+</head>
+<body>
+  <div class="app-wrap">
+    <header class="app-header">
+      <a href="../../index.html" class="home-btn">← 홈</a>
+      <h1>🐊 악어 이빨</h1>
+    </header>
+
+    <main class="croc-main">
+      <div class="stage">
+
+        <div class="croc-container" id="croc-container">
+          <!-- 악어 SVG -->
+          <svg class="croc-svg" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+            <!-- 하악 (고정) -->
+            <g id="lower-body">
+              <ellipse cx="200" cy="195" rx="155" ry="52" fill="#265c26"/>
+              <ellipse cx="200" cy="195" rx="148" ry="46" fill="#2e7a2e"/>
+              <!-- 혀 -->
+              <ellipse cx="200" cy="172" rx="46" ry="18" fill="#c0392b"/>
+              <ellipse cx="200" cy="170" rx="42" ry="15" fill="#e05050"/>
+              <!-- 아랫니 (장식) -->
+              <polygon points="118,152 126,134 134,152" fill="#fffde7" opacity="0.7"/>
+              <polygon points="155,147 163,127 171,147" fill="#fffde7" opacity="0.7"/>
+              <polygon points="193,145 201,124 209,145" fill="#fffde7" opacity="0.7"/>
+              <polygon points="231,147 239,127 247,147" fill="#fffde7" opacity="0.7"/>
+              <polygon points="268,152 276,134 284,152" fill="#fffde7" opacity="0.7"/>
+              <!-- 다리 -->
+              <ellipse cx="75" cy="228" rx="32" ry="15" fill="#265c26"/>
+              <ellipse cx="325" cy="228" rx="32" ry="15" fill="#265c26"/>
+              <!-- 꼬리 -->
+              <path d="M355,205 Q420,185 415,232 Q385,222 355,215Z" fill="#2e7a2e"/>
+              <path d="M48,208 Q-20,190 -15,234 Q15,224 48,218Z" fill="#2e7a2e"/>
+            </g>
+
+            <!-- 상악 (애니메이션됨) -->
+            <g id="upper-jaw">
+              <ellipse cx="200" cy="120" rx="155" ry="56" fill="#265c26"/>
+              <ellipse cx="200" cy="118" rx="148" ry="50" fill="#2e7a2e"/>
+              <!-- 비늘 -->
+              <circle cx="200" cy="105" r="7" fill="rgba(0,0,0,0.12)"/>
+              <circle cx="172" cy="112" r="6" fill="rgba(0,0,0,0.12)"/>
+              <circle cx="228" cy="112" r="6" fill="rgba(0,0,0,0.12)"/>
+              <circle cx="155" cy="100" r="5" fill="rgba(0,0,0,0.1)"/>
+              <circle cx="245" cy="100" r="5" fill="rgba(0,0,0,0.1)"/>
+              <!-- 콧구멍 -->
+              <ellipse cx="178" cy="88" rx="10" ry="7" fill="#1a3d1a"/>
+              <ellipse cx="222" cy="88" rx="10" ry="7" fill="#1a3d1a"/>
+              <!-- 눈 흰자/테두리 -->
+              <circle cx="140" cy="72" r="24" fill="#1a1a1a"/>
+              <circle cx="260" cy="72" r="24" fill="#1a1a1a"/>
+              <!-- 눈 -->
+              <circle cx="140" cy="72" r="20" fill="#e6b800"/>
+              <circle cx="260" cy="72" r="20" fill="#e6b800"/>
+              <!-- 동공 -->
+              <ellipse cx="140" cy="72" rx="9" ry="15" fill="#111" id="pupil-l"/>
+              <ellipse cx="260" cy="72" rx="9" ry="15" fill="#111" id="pupil-r"/>
+              <!-- 눈 하이라이트 -->
+              <circle cx="144" cy="65" r="5" fill="rgba(255,255,255,0.7)"/>
+              <circle cx="264" cy="65" r="5" fill="rgba(255,255,255,0.7)"/>
+              <!-- 윗니 -->
+              <polygon points="118,162 126,142 134,162" fill="#fffde7"/>
+              <polygon points="155,166 163,144 171,166" fill="#fffde7"/>
+              <polygon points="193,168 201,145 209,168" fill="#fffde7"/>
+              <polygon points="231,166 239,144 247,166" fill="#fffde7"/>
+              <polygon points="268,162 276,142 284,162" fill="#fffde7"/>
+            </g>
+          </svg>
+
+          <!-- 클릭 가능한 이빨 버튼 오버레이 -->
+          <div class="teeth-overlay" id="teeth-overlay"></div>
+        </div>
+
+        <div class="status-box" id="status-box">
+          <span id="status-text">두근두근... 이빨을 눌러보세요!</span>
+        </div>
+
+        <div class="tooth-count">남은 이빨: <strong id="count-num">13</strong>개</div>
+
+        <button class="btn btn-primary restart-btn" id="restart-btn" style="display:none">🔄 다시하기</button>
+      </div>
+    </main>
+  </div>
+
+  <div class="bite-flash" id="bite-flash"></div>
+  <script src="croc.js"></script>
+</body>
+</html>

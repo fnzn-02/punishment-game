@@ -1,0 +1,271 @@
+:root {
+  --bg: #0d0d0f;
+  --bg2: #13131a;
+  --card-bg: #1a1a2e;
+  --card-border: #2a2a4a;
+  --accent: #7c3aed;
+  --accent2: #a855f7;
+  --neon: #c084fc;
+  --text: #f0f0f8;
+  --text-muted: #888;
+  --red: #ef4444;
+  --green: #22c55e;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+  min-height: 100vh;
+  touch-action: manipulation;
+}
+
+.app-wrap { display: flex; flex-direction: column; min-height: 100vh; }
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--card-border);
+  background: var(--bg2);
+}
+
+.home-btn {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--card-border);
+  border-radius: 0.5rem;
+  transition: color 0.2s, border-color 0.2s;
+}
+.home-btn:hover { color: var(--neon); border-color: var(--accent2); }
+
+.app-header h1 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff, var(--neon));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 메인 */
+.croc-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 460px;
+}
+
+/* 악어 컨테이너 */
+.croc-container {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  filter: drop-shadow(0 8px 30px rgba(46, 122, 46, 0.5));
+  transition: filter 0.3s;
+}
+
+.croc-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 상악 입 닫기 */
+#upper-jaw {
+  transform-origin: 200px 165px;
+  transition: transform 0.2s ease-in;
+}
+
+.croc-container.bite #upper-jaw {
+  transform: rotateX(-30deg);
+  animation: jaw-snap 0.3s ease-out forwards;
+}
+
+@keyframes jaw-snap {
+  0%   { transform: rotateX(0deg); }
+  50%  { transform: rotateX(-32deg); }
+  100% { transform: rotateX(-28deg); }
+}
+
+/* 흔들기 */
+.croc-container.shake {
+  animation: croc-shake 0.55s ease-out;
+}
+
+@keyframes croc-shake {
+  0%   { transform: translate(0,0) rotate(0); }
+  15%  { transform: translate(-10px,0) rotate(-4deg); }
+  30%  { transform: translate(10px,0) rotate(4deg); }
+  45%  { transform: translate(-7px,0) rotate(-3deg); }
+  60%  { transform: translate(7px,0) rotate(3deg); }
+  75%  { transform: translate(-4px,0) rotate(-1.5deg); }
+  100% { transform: translate(0,0) rotate(0); }
+}
+
+.croc-container.danger {
+  filter: drop-shadow(0 8px 35px rgba(239, 68, 68, 0.8));
+}
+
+/* 이빨 버튼 오버레이 */
+.teeth-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 28%;
+  gap: 5px;
+  pointer-events: none;
+}
+
+.tooth-btn {
+  width: 34px;
+  height: 42px;
+  background: rgba(255, 253, 231, 0.12);
+  border: 2px solid rgba(255, 253, 231, 0.2);
+  border-radius: 4px 4px 50% 50%;
+  cursor: pointer;
+  pointer-events: all;
+  transition: background 0.15s, transform 0.1s, border-color 0.15s, box-shadow 0.15s;
+  position: relative;
+}
+
+.tooth-btn::after {
+  content: '';
+  position: absolute;
+  top: 4px; left: 50%;
+  transform: translateX(-50%);
+  width: 8px; height: 8px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+}
+
+.tooth-btn:not(:disabled):hover {
+  background: rgba(255, 253, 231, 0.28);
+  border-color: rgba(255, 253, 231, 0.5);
+  transform: scaleY(0.93);
+  box-shadow: 0 0 10px rgba(255, 253, 231, 0.2);
+}
+
+.tooth-btn.pressed {
+  transform: scaleY(0.78) translateY(5px) !important;
+  background: rgba(34, 197, 94, 0.35);
+  border-color: var(--green);
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+  pointer-events: none;
+}
+
+.tooth-btn.dead {
+  background: rgba(239, 68, 68, 0.6) !important;
+  border-color: var(--red) !important;
+  transform: scaleY(0.7) translateY(6px) !important;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.6) !important;
+  pointer-events: none;
+}
+
+.tooth-btn:disabled:not(.pressed):not(.dead) {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+/* 상태 박스 */
+.status-box {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
+  min-width: 280px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.status-box.danger {
+  border-color: var(--red);
+  color: var(--red);
+  box-shadow: 0 0 25px rgba(239, 68, 68, 0.35);
+  animation: status-pop 0.4s ease-out;
+}
+
+.status-box.safe-msg {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+@keyframes status-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.07); }
+  100% { transform: scale(1); }
+}
+
+/* 카운트 */
+.tooth-count {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+.tooth-count strong {
+  color: var(--neon);
+  font-size: 1.1rem;
+}
+
+/* 버튼 */
+.btn {
+  border: none;
+  border-radius: 0.7rem;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn:active { transform: scale(0.96); }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+}
+.btn-primary:hover { box-shadow: 0 6px 22px rgba(168, 85, 247, 0.6); }
+
+/* 화면 플래시 */
+.bite-flash {
+  position: fixed;
+  inset: 0;
+  background: var(--red);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.bite-flash.active {
+  animation: screen-flash 0.5s ease-out forwards;
+}
+
+@keyframes screen-flash {
+  0%   { opacity: 0.55; }
+  100% { opacity: 0; }
+}
+
+/* 모바일 */
+@media (max-width: 480px) {
+  .tooth-btn { width: 26px; height: 34px; }
+  .teeth-overlay { gap: 3px; padding-bottom: 26%; }
+  .status-box { font-size: 1rem; padding: 0.8rem 1.2rem; min-width: 200px; }
+}

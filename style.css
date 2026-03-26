@@ -1,141 +1,276 @@
-/* style.css */
+/* ==========================================
+   전역 리셋 & 변수
+   ========================================== */
+:root {
+  --bg: #0d0d0f;
+  --bg2: #13131a;
+  --card-bg: #1a1a2e;
+  --card-border: #2a2a4a;
+  --accent: #7c3aed;
+  --accent2: #a855f7;
+  --neon: #c084fc;
+  --text: #f0f0f8;
+  --text-muted: #888;
+  --red: #ef4444;
+  --green: #22c55e;
+  --yellow: #eab308;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #f9f9f9, #e0f7fa);
-  margin: 0;
-  padding: 0;
+  font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ==========================================
+   파티클 배경
+   ========================================== */
+.particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: var(--neon);
+  opacity: 0;
+  animation: float-up linear infinite;
+}
+
+@keyframes float-up {
+  0%   { transform: translateY(0) scale(1); opacity: 0.6; }
+  100% { transform: translateY(-100vh) scale(0); opacity: 0; }
+}
+
+/* ==========================================
+   헤더
+   ========================================== */
+header {
+  position: relative;
+  z-index: 1;
+  padding: 3rem 2rem 2rem;
   text-align: center;
 }
 
-header {
-  padding: 2rem 1rem;
+.logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-icon {
+  font-size: 3rem;
+  filter: drop-shadow(0 0 12px var(--accent2));
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { filter: drop-shadow(0 0 10px var(--accent2)); }
+  50%       { filter: drop-shadow(0 0 24px var(--neon)); }
 }
 
 h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff 0%, var(--neon) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
 }
 
-p {
-  color: #555;
-  margin-top: 0;
+header p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-top: 0.3rem;
 }
 
+/* ==========================================
+   게임 메뉴 그리드
+   ========================================== */
 .game-menu {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  padding: 2rem;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 2rem 4rem;
 }
 
+/* ==========================================
+   게임 카드
+   ========================================== */
 .game-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 150px;
-  height: 150px;
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  gap: 0.5rem;
+  padding: 2rem 1rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 1.2rem;
   text-decoration: none;
-  color: #333;
-  transition: transform 0.2s, box-shadow 0.2s;
+  color: var(--text);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+
+.card-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.15), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .game-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  transform: translateY(-6px) scale(1.02);
+  border-color: var(--accent2);
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.3), 0 8px 30px rgba(0,0,0,0.4);
 }
 
-.icon {
+.game-card:hover .card-glow { opacity: 1; }
+
+.game-card .icon {
   font-size: 3rem;
-  margin-bottom: 0.5rem;
+  transition: transform 0.3s;
+  display: block;
 }
 
-.title {
-  font-weight: bold;
+.game-card:hover .icon { transform: scale(1.2) rotate(-5deg); }
+
+.game-card .title {
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
 }
 
-/* ========================================= */
-/* === 모바일(스마트폰) 전용 스타일 수정 === */
-/* ========================================= */
-@media screen and (max-width: 768px) {
-    /* 1. 전체 앱 틀 여백 조절 */
-    .ladder-app {
-        width: 100%;
-        max-width: 100%;
-        padding: 10px;
-        margin: 0;
-        box-shadow: none;
-    }
+.badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+}
 
-    /* 2. 헤더(제목+홈버튼) 수정 */
-    .app-header {
-        flex-direction: column; /* 세로로 배치 */
-        gap: 10px;
-        margin-bottom: 1rem;
-    }
-    
-    .home-btn {
-        position: static; /* 왼쪽 고정 해제 */
-        transform: none;
-        width: 100%; /* 버튼 꽉 차게 */
-        text-align: center;
-        margin-bottom: 5px;
-    }
+.badge.complete {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--green);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
 
-    .app-header h1 {
-        font-size: 1.5rem;
-        margin: 0;
-    }
+.badge.soon {
+  background: rgba(234, 179, 8, 0.15);
+  color: var(--yellow);
+  border: 1px solid rgba(234, 179, 8, 0.3);
+}
 
-    /* 3. 컨트롤 버튼 영역 수정 (제일 중요!) */
-    .controls {
-        flex-direction: column; /* 버튼들 세로로 쌓기 */
-        height: auto; /* 높이 제한 해제 */
-        gap: 10px;
-        align-items: stretch; /* 가로 꽉 차게 */
-    }
+/* ==========================================
+   공통 게임 앱 레이아웃 (각 게임에서 재사용)
+   ========================================== */
+.app-wrap {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+}
 
-    /* 인원수 조절기 (+/-) 위치 수정 */
-    .player-stepper {
-        position: static; /* 중앙 고정 해제 */
-        transform: none;
-        justify-content: center;
-        width: 100%;
-        margin: 10px 0; /* 위아래 여백 */
-        padding: 5px;
-        background: #fff;
-    }
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid var(--card-border);
+  background: var(--bg2);
+}
 
-    /* 버튼 그룹들 */
-    .controls-group {
-        flex-direction: column; /* 버튼들도 세로로 */
-        width: 100%;
-        gap: 5px;
-    }
+.home-btn {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--card-border);
+  border-radius: 0.5rem;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
 
-    /* 모든 버튼 꽉 차게 */
-    button {
-        width: 100%; 
-        height: 45px;
-        font-size: 14px;
-        margin: 0;
-    }
+.home-btn:hover { color: var(--neon); border-color: var(--accent2); }
 
-    /* 4. 사다리 게임판 가로 스크롤 (깨짐 방지) */
-    #game-board-content {
-        width: 100%;
-        overflow-x: auto; /* 화면보다 크면 옆으로 스크롤 */
-        padding-bottom: 20px;
-    }
+.app-header h1 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff, var(--neon));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-    /* 5. 룰렛 게임 크기 자동 조절 */
-    .roulette-board-wrapper {
-        width: 100%;
-        height: auto;
-        aspect-ratio: 1/1;
-    }
+/* 공통 버튼 */
+.btn {
+  border: none;
+  border-radius: 0.7rem;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+}
+
+.btn:active { transform: scale(0.96); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+}
+
+.btn-primary:hover:not(:disabled) { box-shadow: 0 6px 20px rgba(168, 85, 247, 0.6); }
+
+.btn-danger {
+  background: linear-gradient(135deg, #dc2626, var(--red));
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #16a34a, var(--green));
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+}
+
+.btn-ghost {
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--card-border);
+}
+
+.btn-ghost:hover:not(:disabled) { border-color: var(--accent2); color: var(--neon); }
+
+/* ==========================================
+   모바일
+   ========================================== */
+@media (max-width: 500px) {
+  h1 { font-size: 1.8rem; }
+  .logo-wrap { flex-direction: column; gap: 0.4rem; text-align: center; }
+  .game-menu { grid-template-columns: repeat(2, 1fr); padding: 1rem 1rem 3rem; }
+  .game-card { padding: 1.5rem 0.8rem; }
+  .game-card .icon { font-size: 2.4rem; }
 }

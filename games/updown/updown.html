@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>업다운</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="updown.css">
+</head>
+<body>
+  <div class="app-wrap">
+    <header class="app-header">
+      <a href="../../index.html" class="home-btn">← 홈</a>
+      <h1>🔢 업다운</h1>
+    </header>
+
+    <main class="updown-main">
+
+      <!-- 설정 화면 -->
+      <div class="setup-panel" id="setup-panel">
+        <h2>게임 설정</h2>
+
+        <div class="setting-row">
+          <label>숫자 범위</label>
+          <div class="range-select">
+            <button class="range-btn active" data-range="50">1~50</button>
+            <button class="range-btn" data-range="100">1~100</button>
+            <button class="range-btn" data-range="200">1~200</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <label>최대 시도 횟수</label>
+          <div class="range-select">
+            <button class="tries-btn active" data-tries="7">7번</button>
+            <button class="tries-btn" data-tries="10">10번</button>
+            <button class="tries-btn" data-tries="0">무제한</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <label>플레이어 수</label>
+          <div class="player-stepper">
+            <button id="btn-dec">−</button>
+            <span id="player-count">2</span>
+            <button id="btn-inc">+</button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary start-btn" id="start-btn">게임 시작!</button>
+      </div>
+
+      <!-- 게임 화면 -->
+      <div class="game-panel" id="game-panel" style="display:none">
+        <div class="player-badges" id="player-badges"></div>
+
+        <div class="number-display">
+          <div class="hint-arrow" id="hint-arrow">?</div>
+          <div class="range-label" id="range-label">1 ~ 50</div>
+        </div>
+
+        <div class="tries-bar" id="tries-bar" style="display:none">
+          <div class="tries-dots" id="tries-dots"></div>
+          <span class="tries-label" id="tries-label"></span>
+        </div>
+
+        <div class="input-area">
+          <input type="number" id="guess-input" class="guess-input" placeholder="숫자 입력" min="1">
+          <button class="btn btn-primary submit-btn" id="submit-btn">확인</button>
+        </div>
+
+        <div class="history" id="history"></div>
+      </div>
+
+      <!-- 결과 화면 -->
+      <div class="result-panel" id="result-panel" style="display:none">
+        <div class="result-icon" id="result-icon">💀</div>
+        <h2 id="result-title"></h2>
+        <p id="result-desc"></p>
+        <div class="answer-reveal" id="answer-reveal"></div>
+        <button class="btn btn-primary" id="play-again-btn">🔄 다시하기</button>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="updown.js"></script>
+</body>
+</html>

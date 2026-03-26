@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>캡슐토이 머신</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="gacha.css">
+</head>
+<body>
+  <div class="app-wrap">
+    <header class="app-header">
+      <a href="../../index.html" class="home-btn">← 홈</a>
+      <h1>🟢 캡슐토이 머신</h1>
+    </header>
+
+    <main class="gacha-main">
+      <div class="machine-wrap">
+
+        <!-- 머신 본체 -->
+        <div class="machine" id="machine">
+          <!-- 유리구 (캡슐 전시) -->
+          <div class="globe">
+            <div class="globe-shine"></div>
+            <div class="capsules-inside" id="capsules-inside"></div>
+          </div>
+
+          <!-- 머신 바디 -->
+          <div class="machine-body">
+            <div class="machine-label">GACHA MACHINE</div>
+            <div class="coin-slot-area">
+              <div class="coin-slot" id="coin-slot">
+                <span>▼ 클릭하면 뽑기!</span>
+              </div>
+            </div>
+            <!-- 출구 -->
+            <div class="output-chute">
+              <div class="chute-door" id="chute-door"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 뽑힌 캡슐 -->
+        <div class="capsule-result" id="capsule-result" style="display:none">
+          <div class="capsule-3d" id="capsule-3d">
+            <div class="cap top-cap" id="cap-top"></div>
+            <div class="cap bottom-cap" id="cap-bottom"></div>
+          </div>
+          <div class="result-content" id="result-content" style="display:none">
+            <span class="result-emoji" id="result-emoji"></span>
+            <strong class="result-text" id="result-text"></strong>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 입력 패널 -->
+      <div class="input-panel" id="input-panel">
+        <h2>벌칙 / 상품 등록</h2>
+        <p class="input-desc">최대 8개까지 등록. 색상별로 당첨 내용이 정해집니다.</p>
+        <div class="items-grid" id="items-grid"></div>
+        <button class="btn btn-primary" id="ready-btn">머신 준비 완료!</button>
+      </div>
+
+      <!-- 게임 중 패널 -->
+      <div class="play-panel" id="play-panel" style="display:none">
+        <div class="status-msg" id="status-msg">코인 슬롯을 눌러 캡슐을 뽑으세요!</div>
+        <div class="pulled-list" id="pulled-list"></div>
+        <button class="btn btn-ghost" id="edit-btn">✏️ 항목 수정</button>
+      </div>
+    </main>
+  </div>
+
+  <script src="gacha.js"></script>
+</body>
+</html>

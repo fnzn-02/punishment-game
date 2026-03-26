@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>제비뽑기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="draw.css">
+</head>
+<body>
+  <div class="app-wrap">
+    <header class="app-header">
+      <a href="../../index.html" class="home-btn">← 홈</a>
+      <h1>🎟️ 제비뽑기</h1>
+    </header>
+
+    <div class="draw-body">
+      <div class="controls">
+        <div class="controls-group">
+          <button id="batch-options-btn" class="btn btn-ghost">일괄입력</button>
+          <button id="clear-inputs-btn" class="btn btn-ghost">초기화</button>
+        </div>
+
+        <div class="player-stepper">
+          <button id="btn-decrement" aria-label="인원 줄이기">−</button>
+          <div class="player-count-display">
+            <span id="player-count-text">2</span>
+            <span>명</span>
+          </div>
+          <button id="btn-increment" aria-label="인원 늘리기">+</button>
+        </div>
+
+        <div class="controls-group">
+          <button id="start-btn" class="btn btn-success">시작하기</button>
+        </div>
+      </div>
+
+      <div class="draw-board-wrapper">
+        <div class="draw-animation-area">
+          <div class="draw-jar">
+            <div class="draw-jar-papers"></div>
+          </div>
+        </div>
+
+        <div id="inputs-container" class="inputs-container"></div>
+        <div id="message-area" class="message-area"></div>
+        <div id="choices-container" class="choices-container"></div>
+      </div>
+
+      <div id="output" class="output"></div>
+    </div>
+  </div>
+
+  <script src="draw.js"></script>
+</body>
+</html>
