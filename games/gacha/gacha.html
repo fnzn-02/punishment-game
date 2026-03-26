@@ -59,7 +59,23 @@
         <h2>벌칙 / 상품 등록</h2>
         <p class="input-desc">최대 8개까지 등록. 색상별로 당첨 내용이 정해집니다.</p>
         <div class="items-grid" id="items-grid"></div>
-        <button class="btn btn-primary" id="ready-btn">머신 준비 완료!</button>
+        <div class="input-actions">
+          <button class="btn btn-ghost batch-btn" id="batch-btn">📋 일괄입력</button>
+          <button class="btn btn-primary" id="ready-btn">머신 준비 완료!</button>
+        </div>
+      </div>
+
+      <!-- 일괄입력 모달 -->
+      <div class="batch-modal" id="batch-modal">
+        <div class="batch-modal-inner">
+          <h3>일괄입력</h3>
+          <p>쉼표(,) 또는 줄바꿈으로 구분하여 입력하세요. (최대 8개)</p>
+          <textarea id="batch-textarea" placeholder="예: 벌칙1, 벌칙2, 벌칙3&#10;또는 한 줄에 하나씩"></textarea>
+          <div class="batch-modal-btns">
+            <button class="btn btn-ghost" id="batch-cancel-btn">취소</button>
+            <button class="btn btn-primary" id="batch-confirm-btn">적용</button>
+          </div>
+        </div>
       </div>
 
       <!-- 게임 중 패널 -->

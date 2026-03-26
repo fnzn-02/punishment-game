@@ -8,43 +8,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <div class="ladder-app">
+    <div class="app-wrap">
         <header class="app-header">
             <a href="../../index.html" class="home-btn">← 홈</a>
             <h1>🎡 룰렛 돌리기</h1>
         </header>
-        
-        <div class="controls">
-            <div class="controls-group">
-                <button id="batch-options-btn" class="alt">옵션 일괄입력</button>
-                <button id="clear-inputs-btn" class="alt">입력 초기화</button>
-            </div>
 
-            <div class="player-stepper">
-                <button id="btn-decrement" aria-label="옵션 줄이기">-</button>
-                <div class="player-count-display">
-                    <span id="player-count-text">2</span>
-                    <span>칸</span>
+        <main class="roulette-main">
+            <div class="controls">
+                <div class="controls-group">
+                    <button id="batch-options-btn" class="alt">옵션 일괄입력</button>
+                    <button id="clear-inputs-btn" class="alt">입력 초기화</button>
                 </div>
-                <button id="btn-increment" aria-label="옵션 늘리기">+</button>
-            </div>
 
-            <div class="controls-group">
-                <button id="spin-btn" class="btn-green">돌리기!</button>
-            </div>
-        </div>
-
-        <div class="roulette-board-wrapper">
-            <div class="roulette-arrow"></div>
-            
-            <div id="roulette-spinner" class="roulette-spinner">
-                <canvas id="roulette-canvas" width="500" height="500"></canvas>
-                <div id="roulette-inputs" class="roulette-inputs-container">
+                <div class="player-stepper">
+                    <button id="btn-decrement" aria-label="옵션 줄이기">-</button>
+                    <div class="player-count-display">
+                        <span id="player-count-text">2</span>
+                        <span>칸</span>
                     </div>
+                    <button id="btn-increment" aria-label="옵션 늘리기">+</button>
+                </div>
+
+                <div class="controls-group">
+                    <button id="spin-btn" class="btn-green">돌리기!</button>
+                </div>
             </div>
-        </div>
-        
-        <div id="output" class="output"></div>
+
+            <div class="roulette-board-wrapper">
+                <div class="roulette-arrow"></div>
+
+                <div id="roulette-spinner" class="roulette-spinner">
+                    <canvas id="roulette-canvas" width="500" height="500"></canvas>
+                    <div id="roulette-inputs" class="roulette-inputs-container">
+                    </div>
+                </div>
+            </div>
+
+            <div id="output" class="output"></div>
+        </main>
     </div>
     <script src="roulette.js"></script>
     <script src="../../theme.js"></script>

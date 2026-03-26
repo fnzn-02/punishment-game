@@ -400,6 +400,80 @@ body {
 }
 .btn-ghost:hover { color: var(--neon); border-color: var(--accent2); }
 
+/* 일괄입력 버튼 그룹 */
+.input-actions {
+  display: flex;
+  gap: 0.7rem;
+  width: 100%;
+  max-width: 320px;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.batch-btn {
+  max-width: none;
+}
+
+/* 일괄입력 모달 */
+.batch-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.batch-modal.open { display: flex; }
+
+.batch-modal-inner {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.batch-modal-inner h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--neon);
+}
+
+.batch-modal-inner p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.batch-modal-inner textarea {
+  width: 100%;
+  height: 120px;
+  background: var(--bg);
+  border: 1px solid var(--card-border);
+  border-radius: 0.6rem;
+  color: var(--text);
+  font-size: 0.95rem;
+  padding: 0.7rem;
+  resize: vertical;
+  outline: none;
+  font-family: inherit;
+}
+.batch-modal-inner textarea:focus { border-color: var(--accent2); }
+
+.batch-modal-btns {
+  display: flex;
+  gap: 0.7rem;
+}
+.batch-modal-btns .btn { flex: 1; max-width: none; }
+
+html[data-theme="light"] .batch-modal-inner { background:#fff; border-color:#e0d8f8; }
+html[data-theme="light"] .batch-modal-inner textarea { background:#f8f7ff; color:#1a1a2e; border-color:#e0d8f8; }
+
 /* 모바일 */
 @media (max-width: 500px) {
   .machine-wrap { flex-direction: column; align-items: center; }

@@ -5,17 +5,18 @@
     --text-color: #f0f0f8;
     --border-color: #2a2a4a;
     --bg-color: #0d0d0f;
+    --bg2: #13131a;
     --card-bg: #1a1a2e;
     --neon: #c084fc;
     --accent2: #a855f7;
 }
 
 /* ============ 라이트 모드 ============ */
-html[data-theme="light"] { --bg-color:#f4f2ff; --card-bg:#ffffff; --text-color:#1a1a2e; --border-color:#e0d8f8; --neon:#7c3aed; --accent2:#a855f7; }
+html[data-theme="light"] { --bg-color:#f4f2ff; --bg2:#ffffff; --card-bg:#ffffff; --text-color:#1a1a2e; --border-color:#e0d8f8; --neon:#7c3aed; --accent2:#a855f7; }
 html[data-theme="light"] body { background:#f4f2ff; color:#1a1a2e; }
-html[data-theme="light"] .ladder-app { background:#fff; border-color:#e0d8f8; box-shadow:0 4px 16px rgba(0,0,0,0.08); }
+html[data-theme="light"] .app-header { background:#fff; border-bottom-color:#e0d8f8; box-shadow:0 1px 8px rgba(0,0,0,0.06); }
 html[data-theme="light"] .app-header h1 { background:linear-gradient(135deg,#1a1a2e,#7c3aed); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-html[data-theme="light"] .home-btn { color:#666; background:#f4f2ff; border-color:#e0d8f8; }
+html[data-theme="light"] .home-btn { color:#666; border-color:#e0d8f8; }
 html[data-theme="light"] .home-btn:hover { color:#7c3aed; border-color:#a855f7; }
 html[data-theme="light"] .alt { background:#f4f2ff; color:#666; border-color:#e0d8f8; }
 html[data-theme="light"] .alt:hover { color:#7c3aed; border-color:#a855f7; }
@@ -26,45 +27,68 @@ html[data-theme="light"] .player-stepper button { color:#666; }
 html[data-theme="light"] #ladder-overlay { background-color:rgba(244,242,255,0.9); color:#1a1a2e; }
 html[data-theme="light"] .output .pair { background:#fff; border-color:#e0d8f8; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
     background: var(--bg-color);
     color: var(--text-color);
-    display: flex; justify-content: center; padding: 1rem;
+    min-height: 100vh;
 }
-.ladder-app {
-    width: 100%; max-width: 1024px; margin: 1rem auto;
-    padding: 1.5rem; background: var(--card-bg);
-    border-radius: 12px; box-shadow: 0 4px 30px rgba(0,0,0,0.4);
-    text-align: center;
-    border: 1px solid var(--border-color);
+
+.app-wrap {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
+
 .app-header {
-    display: flex; justify-content: center; align-items: center;
-    position: relative; margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg2);
 }
+
 .app-header h1 {
-    font-size: 1.8rem;
+    font-size: 1.3rem;
+    font-weight: 800;
     background: linear-gradient(135deg, #fff, var(--neon));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
+
 .home-btn {
-    position: absolute; left: 0; text-decoration: none;
-    color: #888; background: #13131a; padding: 0.5rem 0.8rem;
-    border-radius: 8px; border: 1px solid var(--border-color);
-    transition: color 0.2s, border-color 0.2s;
+    text-decoration: none;
+    color: var(--text-color);
+    opacity: 0.6;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    transition: color 0.2s, border-color 0.2s, opacity 0.2s;
 }
-.home-btn:hover { color: var(--neon); border-color: var(--accent2); }
+.home-btn:hover { opacity: 1; color: var(--neon); border-color: var(--accent2); }
+
+.ladder-main {
+    flex: 1;
+    padding: 1.5rem;
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
 .controls {
     position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    margin-bottom: 1.5rem;
     gap: 1rem;
     min-height: 46px;
 }
@@ -76,50 +100,54 @@ body {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    display: flex; 
+    display: flex;
     align-items: center;
-    border: 1px solid var(--border-color); 
+    border: 1px solid var(--border-color);
     border-radius: 8px;
+    background: var(--bg2);
 }
 .player-stepper button {
     width: 44px; height: 44px; background: none; border: none;
-    font-size: 1.5rem; color: #555; cursor: pointer;
+    font-size: 1.5rem; color: #888; cursor: pointer;
+    transition: color 0.2s;
 }
-.player-stepper button:disabled { color: #ccc; cursor: not-allowed; }
+.player-stepper button:hover { color: var(--neon); }
+.player-stepper button:disabled { color: var(--border-color); cursor: not-allowed; }
 .player-count-display {
     padding: 0 1rem; font-size: 1.2rem; font-weight: 500;
     border-left: 1px solid var(--border-color);
     border-right: 1px solid var(--border-color);
 }
+
 button {
     padding: 0.6rem 1rem; border-radius: 8px; border: none;
     cursor: pointer; font-size: 0.95rem; font-weight: 500;
     height: 46px;
-    transition: filter 0.2s;
+    transition: filter 0.2s, opacity 0.2s;
 }
-button:hover {
-    filter: brightness(0.95);
-}
+button:hover { filter: brightness(1.1); }
 button:disabled { opacity: 0.6; cursor: not-allowed; filter: none; }
-.alt { background:#13131a; color:#aaa; border:1px solid var(--border-color); }
+
+.alt { background: var(--bg2); color: #aaa; border: 1px solid var(--border-color); }
 .alt:hover { color: var(--neon); border-color: var(--accent2); }
 .btn-red {
-    background-color: var(--accent-secondary);
-    color: white;
-    border: 1px solid #e53935;
+    background: linear-gradient(135deg, #dc2626, var(--accent-secondary));
+    color: white; border: none;
+    box-shadow: 0 3px 10px rgba(239,68,68,0.3);
 }
 .btn-green {
-    background-color: var(--accent-primary);
-    color: white;
-    border: 1px solid #02b350;
+    background: linear-gradient(135deg, #16a34a, var(--accent-primary));
+    color: white; border: none;
+    box-shadow: 0 3px 10px rgba(34,197,94,0.3);
 }
+
 #game-board-wrapper {
     width: 100%;
     overflow-x: auto;
     text-align: center;
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    background: #13131a;
+    background: var(--bg2);
 }
 #game-board-content {
     display: inline-block;
@@ -131,7 +159,7 @@ button:disabled { opacity: 0.6; cursor: not-allowed; filter: none; }
     position: absolute; top: 50%; transform: translate(-50%, -50%);
     width: 100px; padding: 0.7rem 0.5rem; border-radius: 8px;
     border: 1px solid var(--border-color); text-align: center;
-    background: #1a1a2e; color: var(--text-color);
+    background: var(--card-bg); color: var(--text-color);
 }
 .start-trigger {
     position: absolute; top: 50%; transform: translate(-50%, -50%);
@@ -141,43 +169,33 @@ button:disabled { opacity: 0.6; cursor: not-allowed; filter: none; }
     font-size: 1rem; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
 }
-#ladder-wrap { 
-    position: relative; /* 오버레이의 기준점으로 설정 */
-    margin: -10px 0; 
+#ladder-wrap {
+    position: relative;
+    margin: -10px 0;
 }
 #ladder-canvas { display: block; }
 
-/* ★★★ 최종 수정: 블러 효과(Frosted Glass) 가리개 ★★★ */
 #ladder-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    /* 블러 효과 */
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px); /* Safari 브라우저 지원 */
-
-    /* 블러 효과를 지원하지 않는 브라우저를 위한 반투명 배경 */
+    -webkit-backdrop-filter: blur(8px);
     background-color: rgba(13, 13, 15, 0.88);
-
-    color: #f0f0f8; /* 밝은 텍스트 */
+    color: var(--text-color);
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     font-size: 1.1rem;
-    font-weight: 600; /* 텍스트 굵게 */
+    font-weight: 600;
     line-height: 1.6;
     border-radius: 8px;
-    
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s, opacity 0.3s ease-in-out;
     pointer-events: none;
 }
-
 #ladder-overlay.visible {
     visibility: visible;
     opacity: 1;
@@ -185,98 +203,49 @@ button:disabled { opacity: 0.6; cursor: not-allowed; filter: none; }
 }
 
 .output {
-    margin-top: 1.5rem; font-weight: 600;
-    display:flex; flex-direction: column; gap: 0.5rem;
+    font-weight: 600;
+    display: flex; flex-direction: column; gap: 0.5rem;
     align-items: center; min-height: 40px;
 }
 .output .pair {
-    background: #13131a; padding: 0.8rem 1.2rem; border-radius:10px;
-    width: 80%; max-width: 400px; border:1px solid var(--border-color);
+    background: var(--bg2); padding: 0.8rem 1.2rem; border-radius: 10px;
+    width: 80%; max-width: 400px; border: 1px solid var(--border-color);
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    display:flex; justify-content:space-between;
+    display: flex; justify-content: space-between;
 }
 .bottom-row input.finished {
     background: #fffbe6; border-color: #ffe58f; font-weight: bold;
 }
 
-/* ========================================= */
-/* === 모바일(스마트폰) 전용 스타일 수정 === */
-/* ========================================= */
+/* 모바일 */
 @media screen and (max-width: 768px) {
-    /* 1. 전체 앱 틀 여백 조절 */
-    .ladder-app {
-        width: 100%;
-        max-width: 100%;
-        padding: 10px;
-        margin: 0;
-        box-shadow: none;
-    }
-
-    /* 2. 헤더(제목+홈버튼) 수정 */
-    .app-header {
-        flex-direction: column; /* 세로로 배치 */
-        gap: 10px;
-        margin-bottom: 1rem;
-    }
-    
-    .home-btn {
-        position: static; /* 왼쪽 고정 해제 */
-        transform: none;
-        width: 100%; /* 버튼 꽉 차게 */
-        text-align: center;
-        margin-bottom: 5px;
-    }
-
-    .app-header h1 {
-        font-size: 1.5rem;
-        margin: 0;
-    }
-
-    /* 3. 컨트롤 버튼 영역 수정 (제일 중요!) */
+    .ladder-main { padding: 1rem; gap: 1rem; }
     .controls {
-        flex-direction: column; /* 버튼들 세로로 쌓기 */
-        height: auto; /* 높이 제한 해제 */
-        gap: 10px;
-        align-items: stretch; /* 가로 꽉 차게 */
+        flex-direction: column;
+        height: auto;
+        align-items: stretch;
     }
-
-    /* 인원수 조절기 (+/-) 위치 수정 */
     .player-stepper {
-        position: static; /* 중앙 고정 해제 */
+        position: static;
         transform: none;
         justify-content: center;
         width: 100%;
-        margin: 10px 0; /* 위아래 여백 */
         padding: 5px;
-        background: #13131a;
     }
-
-    /* 버튼 그룹들 */
     .controls-group {
-        flex-direction: column; /* 버튼들도 세로로 */
+        flex-direction: column;
         width: 100%;
         gap: 5px;
     }
-
-    /* 모든 버튼 꽉 차게 */
     button {
-        width: 100%; 
+        width: 100%;
         height: 45px;
         font-size: 14px;
         margin: 0;
     }
-
-    /* 4. 사다리 게임판 가로 스크롤 (깨짐 방지) */
     #game-board-content {
         width: 100%;
-        overflow-x: auto; /* 화면보다 크면 옆으로 스크롤 */
+        overflow-x: auto;
         padding-bottom: 20px;
-    }
-
-    /* 5. 룰렛 게임 크기 자동 조절 */
-    .roulette-board-wrapper {
-        width: 100%;
-        height: auto;
-        aspect-ratio: 1/1;
     }
 }

@@ -12,6 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const EMOJIS = ['🎉','💀','🌟','🔥','😈','🎁','👑','💣'];
 
+  const batchBtn       = document.getElementById('batch-btn');
+  const batchModal     = document.getElementById('batch-modal');
+  const batchTextarea  = document.getElementById('batch-textarea');
+  const batchCancelBtn = document.getElementById('batch-cancel-btn');
+  const batchConfirmBtn= document.getElementById('batch-confirm-btn');
+
   const inputPanel   = document.getElementById('input-panel');
   const playPanel    = document.getElementById('play-panel');
   const itemsGrid    = document.getElementById('items-grid');
@@ -149,6 +155,37 @@ document.addEventListener('DOMContentLoaded', () => {
     chuteDoor.classList.remove('open');
     coinSlot.classList.remove('disabled');
     isAnimating = false;
+  });
+
+  // 일괄입력 모달
+  batchBtn.addEventListener('click', () => {
+    batchTextarea.value = '';
+    batchModal.classList.add('open');
+    setTimeout(() => batchTextarea.focus(), 50);
+  });
+
+  batchCancelBtn.addEventListener('click', () => batchModal.classList.remove('open'));
+
+  batchModal.addEventListener('click', e => {
+    if (e.target === batchModal) batchModal.classList.remove('open');
+  });
+
+  batchConfirmBtn.addEventListener('click', () => {
+    const lines = batchTextarea.value
+      .split(/[,\n]/)
+      .map(s => s.trim())
+      .filter(Boolean)
+      .slice(0, 8);
+    lines.forEach((text, i) => {
+      const el = document.getElementById(`item-${i}`);
+      if (el) el.value = text;
+    });
+    // 나머지 초기화
+    for (let i = lines.length; i < 8; i++) {
+      const el = document.getElementById(`item-${i}`);
+      if (el) el.value = '';
+    }
+    batchModal.classList.remove('open');
   });
 
   function delay(ms) { return new Promise(r => setTimeout(r, ms)); }

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>당첨캡슐 뽑기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light')</script>
+  <link rel="stylesheet" href="lucky.css">
+</head>
+<body>
+  <div class="app-wrap">
+    <header class="app-header">
+      <a href="../../index.html" class="home-btn">← 홈</a>
+      <h1>💣 당첨캡슐 뽑기</h1>
+    </header>
+
+    <main class="lucky-main">
+
+      <!-- 설정 화면 -->
+      <div class="setup-panel" id="setup-panel">
+        <p class="setup-desc">
+          캡슐 중 하나에 벌칙이 숨어있어요!<br>
+          돌아가며 뽑아서 벌칙자를 가려내세요.
+        </p>
+
+        <div class="setting-row">
+          <label>플레이어 수</label>
+          <div class="player-stepper">
+            <button id="btn-dec">−</button>
+            <span id="player-count">4</span>
+            <button id="btn-inc">+</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <label>벌칙 캡슐 수</label>
+          <div class="range-select" id="trap-select">
+            <button class="trap-btn active" data-traps="1">1개</button>
+            <button class="trap-btn" data-traps="2">2개</button>
+            <button class="trap-btn" data-traps="3">3개</button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="start-btn">게임 시작!</button>
+      </div>
+
+      <!-- 게임 화면 -->
+      <div class="game-panel" id="game-panel" style="display:none">
+        <div class="turn-info" id="turn-info"></div>
+        <p class="pick-hint">캡슐을 하나 골라 뽑으세요!</p>
+        <div class="capsule-grid" id="capsule-grid"></div>
+        <button class="btn btn-ghost" id="restart-btn">🔄 처음부터</button>
+      </div>
+
+      <!-- 결과 화면 -->
+      <div class="result-panel" id="result-panel" style="display:none">
+        <div class="result-icon" id="result-icon"></div>
+        <h2 id="result-title"></h2>
+        <p id="result-desc"></p>
+        <button class="btn btn-primary" id="again-btn">🔄 다시하기</button>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="lucky.js"></script>
+  <script src="../../theme.js"></script>
+</body>
+</html>
