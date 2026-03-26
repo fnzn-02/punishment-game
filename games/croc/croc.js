@@ -1,13 +1,43 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const overlay    = document.getElementById('teeth-overlay');
-  const crocEl     = document.getElementById('croc-container');
+  const mouthWrap  = document.getElementById('mouth-wrap');
+  const upperJaw   = document.getElementById('upper-jaw');
+  const upperRow   = document.getElementById('upper-teeth-row');
+  const lowerRow   = document.getElementById('lower-teeth-row');
   const statusBox  = document.getElementById('status-box');
   const statusText = document.getElementById('status-text');
   const countNum   = document.getElementById('count-num');
   const restartBtn = document.getElementById('restart-btn');
   const biteFlash  = document.getElementById('bite-flash');
 
-  const TOTAL = 13;
+  // 이빨 개수 & 크기 정의 (13개, 자연스러운 U자형 크기 변화)
+  const TEETH = [
+    { w: 26, h: 38 }, // 1 — 가장자리
+    { w: 30, h: 46 }, // 2
+    { w: 34, h: 52 }, // 3
+    { w: 36, h: 58 }, // 4
+    { w: 38, h: 62 }, // 5 — 앞니
+    { w: 40, h: 65 }, // 6 — 중앙 최대
+    { w: 40, h: 65 }, // 7 — 중앙 최대
+    { w: 38, h: 62 }, // 8
+    { w: 36, h: 58 }, // 9
+    { w: 34, h: 52 }, // 10
+    { w: 30, h: 46 }, // 11
+    { w: 26, h: 38 }, // 12
+    { w: 22, h: 32 }, // 13 — 가장자리
+  ];
+
+  // 윗니: 아랫니보다 약간 작게, 위치 엇갈리게
+  const UPPER = [
+    { w: 22, h: 32 },
+    { w: 28, h: 42 },
+    { w: 32, h: 50 },
+    { w: 36, h: 56 },
+    { w: 34, h: 52 },
+    { w: 28, h: 42 },
+    { w: 22, h: 32 },
+  ];
+
+  const TOTAL = TEETH.length;
   let trapIndex = -1;
   let remaining = TOTAL;
   let gameOver  = false;
@@ -18,27 +48,41 @@ document.addEventListener('DOMContentLoaded', () => {
     trapIndex = Math.floor(Math.random() * TOTAL);
     countNum.textContent = TOTAL;
     restartBtn.style.display = 'none';
-    crocEl.classList.remove('bite', 'shake', 'danger');
+
+    mouthWrap.classList.remove('bite', 'shake');
     statusBox.classList.remove('danger', 'safe-msg');
     statusText.textContent = '두근두근... 이빨을 눌러보세요!';
-    buildTeeth();
+
+    buildUpperTeeth();
+    buildLowerTeeth();
   }
 
-  function buildTeeth() {
-    overlay.innerHTML = '';
-    for (let i = 0; i < TOTAL; i++) {
+  function buildUpperTeeth() {
+    upperRow.innerHTML = '';
+    UPPER.forEach(t => {
+      const el = document.createElement('div');
+      el.className = 'upper-tooth';
+      el.style.width  = t.w + 'px';
+      el.style.height = t.h + 'px';
+      upperRow.appendChild(el);
+    });
+  }
+
+  function buildLowerTeeth() {
+    lowerRow.innerHTML = '';
+    TEETH.forEach((t, i) => {
       const btn = document.createElement('button');
       btn.className = 'tooth-btn';
-      // 양 끝 이빨 위로 살짝 올려서 U자형 느낌
-      if (i < 3 || i >= TOTAL - 3) btn.style.marginBottom = '10%';
+      btn.style.width  = t.w + 'px';
+      btn.style.height = t.h + 'px';
       btn.addEventListener('click', () => handleClick(btn, i));
-      overlay.appendChild(btn);
-    }
+      lowerRow.appendChild(btn);
+    });
   }
 
   function handleClick(btn, idx) {
     if (gameOver) return;
-    if (navigator.vibrate) navigator.vibrate(30);
+    if (navigator.vibrate) navigator.vibrate(25);
 
     if (idx === trapIndex) {
       btn.classList.add('dead');
@@ -48,34 +92,39 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.disabled = true;
       remaining--;
       countNum.textContent = remaining;
-      showSafe();
-      if (remaining === 0) showAllSafe();
+      if (remaining === 0) {
+        allSafe();
+      } else {
+        showSafe();
+      }
     }
   }
 
   function triggerBite() {
     gameOver = true;
-    overlay.querySelectorAll('.tooth-btn').forEach(b => { b.disabled = true; });
+    // 모든 버튼 비활성화
+    lowerRow.querySelectorAll('.tooth-btn').forEach(b => { b.disabled = true; });
 
-    crocEl.classList.add('bite');
-    setTimeout(() => {
-      crocEl.classList.add('shake');
-      crocEl.classList.add('danger');
-    }, 80);
+    // 입 닫기 애니메이션
+    requestAnimationFrame(() => {
+      mouthWrap.classList.add('bite');
+      setTimeout(() => mouthWrap.classList.add('shake'), 180);
+    });
 
     // 화면 플래시
     biteFlash.classList.remove('active');
     void biteFlash.offsetWidth;
     biteFlash.classList.add('active');
 
-    if (navigator.vibrate) navigator.vibrate([120, 60, 420]);
+    // 진동
+    if (navigator.vibrate) navigator.vibrate([110, 55, 380]);
 
+    // 상태 메시지
+    statusBox.classList.remove('safe-msg');
     statusBox.classList.add('danger');
     statusText.textContent = '🦷 으악!! 물렸다!!';
 
-    setTimeout(() => {
-      restartBtn.style.display = 'inline-block';
-    }, 900);
+    setTimeout(() => { restartBtn.style.display = 'inline-block'; }, 850);
   }
 
   function showSafe() {
@@ -85,30 +134,15 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       statusBox.classList.remove('safe-msg');
       statusText.textContent = '다음 이빨을 눌러보세요!';
-    }, 1200);
+    }, 1100);
   }
 
-  function showAllSafe() {
-    statusBox.classList.remove('safe-msg');
+  function allSafe() {
+    statusBox.classList.remove('danger');
     statusBox.classList.add('safe-msg');
     statusText.textContent = '🎉 모두 살아남았어요!';
     restartBtn.style.display = 'inline-block';
   }
-
-  // 눈동자 마우스 추적
-  document.addEventListener('mousemove', (e) => {
-    if (gameOver) return;
-    const pl = document.getElementById('pupil-l');
-    const pr = document.getElementById('pupil-r');
-    if (!pl || !pr) return;
-    const rect = crocEl.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    const dx = Math.max(-6, Math.min(6, (e.clientX - cx) / 40));
-    const dy = Math.max(-5, Math.min(5, (e.clientY - cy) / 40));
-    pl.setAttribute('transform', `translate(${dx},${dy})`);
-    pr.setAttribute('transform', `translate(${dx},${dy})`);
-  });
 
   restartBtn.addEventListener('click', init);
   init();

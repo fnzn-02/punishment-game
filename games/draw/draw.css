@@ -8,9 +8,36 @@
   --neon: #c084fc;
   --text: #f0f0f8;
   --text-muted: #888;
-  --red: #ef4444;
   --green: #22c55e;
+  --red: #ef4444;
 }
+
+/* ============ 라이트 모드 ============ */
+html[data-theme="light"] {
+  --bg: #f4f2ff;
+  --bg2: #ffffff;
+  --card-bg: #ffffff;
+  --card-border: #e0d8f8;
+  --text: #1a1a2e;
+  --text-muted: #666;
+  --neon: #7c3aed;
+}
+html[data-theme="light"] body { background: #f4f2ff; color: #1a1a2e; }
+html[data-theme="light"] .app-header { background: #fff; border-bottom-color: #e0d8f8; box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+html[data-theme="light"] .app-header h1 { background: linear-gradient(135deg,#1a1a2e,#7c3aed); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+html[data-theme="light"] .home-btn { color:#666; border-color:#e0d8f8; }
+html[data-theme="light"] .draw-animation-area { background: radial-gradient(circle at 50% 60%, rgba(124,58,237,0.05), transparent 70%); border-color: #e0d8f8; }
+html[data-theme="light"] .draw-jar { background: linear-gradient(160deg,#f0eeff,#f8f6ff); border-color:#e0d8f8; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+html[data-theme="light"] .draw-jar-papers::after { background: linear-gradient(to top,#f0eeff,transparent); }
+html[data-theme="light"] .inputs-container { background:#fff; border-color:#e0d8f8; }
+html[data-theme="light"] .draw-input-wrapper input { background:#f4f2ff; border-color:#e0d8f8; color:#1a1a2e; }
+html[data-theme="light"] .choices-container { background:#fff; border-color:#e0d8f8; }
+html[data-theme="light"] .result-line { background:#fff; border-color:#e0d8f8; }
+html[data-theme="light"] .paper-face { background:#fff; border-color:#e0d8f8; color:#1a1a2e; }
+html[data-theme="light"] .btn-ghost { background:#f4f2ff; color:#666; border-color:#e0d8f8; }
+html[data-theme="light"] .player-stepper { background:#fff; border-color:#e0d8f8; }
+html[data-theme="light"] .player-stepper button { color:#666; }
+html[data-theme="light"] .message-area { color:#666; }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 

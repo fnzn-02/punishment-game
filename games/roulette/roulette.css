@@ -8,6 +8,20 @@
     --neon: #c084fc;
     --accent2: #a855f7;
 }
+
+/* ============ 라이트 모드 ============ */
+html[data-theme="light"] { --bg-color:#f4f2ff; --card-bg:#ffffff; --text-color:#1a1a2e; --border-color:#e0d8f8; --neon:#7c3aed; --accent2:#a855f7; }
+html[data-theme="light"] body { background:#f4f2ff; color:#1a1a2e; }
+html[data-theme="light"] .ladder-app { background:#fff; border-color:#e0d8f8; box-shadow:0 4px 16px rgba(0,0,0,0.08); }
+html[data-theme="light"] .app-header h1 { background:linear-gradient(135deg,#1a1a2e,#7c3aed); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+html[data-theme="light"] .home-btn { color:#666; background:#f4f2ff; border-color:#e0d8f8; }
+html[data-theme="light"] .home-btn:hover { color:#7c3aed; border-color:#a855f7; }
+html[data-theme="light"] .alt { background:#f4f2ff; color:#666; border-color:#e0d8f8; }
+html[data-theme="light"] .alt:hover { color:#7c3aed; border-color:#a855f7; }
+html[data-theme="light"] .player-stepper { background:#fff; border-color:#e0d8f8; }
+html[data-theme="light"] .player-stepper button { color:#666; }
+html[data-theme="light"] .roulette-input-wrapper input { background:rgba(255,255,255,0.95); color:#1a1a2e; border-color:#e0d8f8; }
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;

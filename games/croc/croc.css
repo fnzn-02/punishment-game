@@ -1,3 +1,4 @@
+/* ============ 변수 ============ */
 :root {
   --bg: #0d0d0f;
   --bg2: #13131a;
@@ -10,8 +11,56 @@
   --text-muted: #888;
   --red: #ef4444;
   --green: #22c55e;
+
+  /* 악어 전용 */
+  --gum-top:    #1e5c1e;
+  --gum-mid:    #267026;
+  --gum-bot:    #1a4a1a;
+  --palate:     #8b1a1a;
+  --interior:   #a52020;
+  --tongue-col: #d94040;
 }
 
+/* ============ 라이트 모드 ============ */
+html[data-theme="light"] {
+  --bg: #f4f2ff;
+  --bg2: #ffffff;
+  --card-bg: #ffffff;
+  --card-border: #e0d8f8;
+  --text: #1a1a2e;
+  --text-muted: #666;
+  --neon: #7c3aed;
+
+  --gum-top:  #2d8a2d;
+  --gum-mid:  #38a838;
+  --gum-bot:  #246024;
+  --palate:   #a02020;
+  --interior: #c03030;
+  --tongue-col: #e05050;
+}
+
+html[data-theme="light"] .app-header {
+  background: #ffffff;
+  border-bottom-color: #e0d8f8;
+}
+html[data-theme="light"] .app-header h1 {
+  background: linear-gradient(135deg, #1a1a2e, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+html[data-theme="light"] .home-btn { color: #666; border-color: #e0d8f8; background: #f4f2ff; }
+html[data-theme="light"] .status-box { background: #ffffff; border-color: #e0d8f8; color: #1a1a2e; }
+html[data-theme="light"] .status-box.safe-msg { border-color: var(--green); color: #16a34a; }
+html[data-theme="light"] .status-box.danger  { border-color: var(--red);   color: #dc2626; }
+html[data-theme="light"] .tooth-count { color: #666; }
+html[data-theme="light"] .tooth-count strong { color: #7c3aed; }
+html[data-theme="light"] .restart-btn {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  box-shadow: 0 4px 14px rgba(124,58,237,0.3);
+}
+
+/* ============ 기본 ============ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -53,154 +102,208 @@ body {
   background-clip: text;
 }
 
-/* 메인 */
+/* ============ 메인 레이아웃 ============ */
 .croc-main {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1.4rem;
   padding: 2rem 1rem;
 }
 
-.stage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
+/* ============ 악어 입 전체 ============ */
+.mouth-wrap {
   width: 100%;
-  max-width: 460px;
-}
-
-/* 악어 컨테이너 */
-.croc-container {
+  max-width: 520px;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 3px rgba(46, 122, 46, 0.6),
+    0 12px 50px rgba(0, 0, 0, 0.6);
   position: relative;
-  width: 100%;
-  max-width: 420px;
-  filter: drop-shadow(0 8px 30px rgba(46, 122, 46, 0.5));
-  transition: filter 0.3s;
+  user-select: none;
 }
 
-.croc-svg {
-  width: 100%;
-  height: auto;
-  display: block;
+/* ============ 윗턱 ============ */
+.upper-jaw {
+  transform-origin: top center;
+  transition: transform 0.22s cubic-bezier(0.55, 0, 0.45, 1);
+  position: relative;
+  z-index: 2;
 }
 
-/* 상악 입 닫기 */
-#upper-jaw {
-  transform-origin: 200px 165px;
-  transition: transform 0.2s ease-in;
+.mouth-wrap.bite .upper-jaw {
+  transform: translateY(68%);
 }
 
-.croc-container.bite #upper-jaw {
-  transform: rotateX(-30deg);
-  animation: jaw-snap 0.3s ease-out forwards;
-}
-
-@keyframes jaw-snap {
-  0%   { transform: rotateX(0deg); }
-  50%  { transform: rotateX(-32deg); }
-  100% { transform: rotateX(-28deg); }
-}
-
-/* 흔들기 */
-.croc-container.shake {
-  animation: croc-shake 0.55s ease-out;
+.mouth-wrap.shake {
+  animation: croc-shake 0.5s ease-out;
 }
 
 @keyframes croc-shake {
-  0%   { transform: translate(0,0) rotate(0); }
-  15%  { transform: translate(-10px,0) rotate(-4deg); }
-  30%  { transform: translate(10px,0) rotate(4deg); }
-  45%  { transform: translate(-7px,0) rotate(-3deg); }
-  60%  { transform: translate(7px,0) rotate(3deg); }
-  75%  { transform: translate(-4px,0) rotate(-1.5deg); }
-  100% { transform: translate(0,0) rotate(0); }
+  0%   { transform: translate(0); }
+  15%  { transform: translate(-8px, 0) rotate(-2deg); }
+  30%  { transform: translate(8px, 0) rotate(2deg); }
+  50%  { transform: translate(-5px, 0) rotate(-1.5deg); }
+  70%  { transform: translate(5px, 0) rotate(1.5deg); }
+  100% { transform: translate(0); }
 }
 
-.croc-container.danger {
-  filter: drop-shadow(0 8px 35px rgba(239, 68, 68, 0.8));
-}
-
-/* 이빨 버튼 오버레이 */
-.teeth-overlay {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+/* 윗잇몸 */
+.upper-gum {
+  background: linear-gradient(180deg, var(--gum-top) 0%, var(--gum-mid) 100%);
+  padding: 18px 20px 0;
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  padding-bottom: 28%;
-  gap: 5px;
-  pointer-events: none;
+  gap: 7px;
 }
 
-.tooth-btn {
-  width: 34px;
-  height: 42px;
-  background: rgba(255, 253, 231, 0.12);
-  border: 2px solid rgba(255, 253, 231, 0.2);
-  border-radius: 4px 4px 50% 50%;
-  cursor: pointer;
-  pointer-events: all;
-  transition: background 0.15s, transform 0.1s, border-color 0.15s, box-shadow 0.15s;
+/* 윗 구개 (붉은 천장) */
+.palate {
+  background: linear-gradient(180deg, var(--palate) 0%, var(--interior) 100%);
+  height: 36px;
+}
+
+/* ============ 입안 중앙 ============ */
+.mouth-interior {
+  background: linear-gradient(180deg, var(--interior) 0%, #8b1818 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 18px 0 14px;
   position: relative;
 }
 
-.tooth-btn::after {
+/* 혀 */
+.tongue {
+  width: 130px;
+  height: 34px;
+  background: radial-gradient(ellipse at 50% 40%, #ff9999, var(--tongue-col) 70%);
+  border-radius: 50% 50% 38% 38% / 55% 55% 45% 45%;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3), inset 0 -3px 6px rgba(0,0,0,0.2);
+  position: relative;
+}
+.tongue::after {
   content: '';
   position: absolute;
-  top: 4px; left: 50%;
+  top: 30%; left: 50%;
   transform: translateX(-50%);
-  width: 8px; height: 8px;
-  background: rgba(255,255,255,0.15);
+  width: 2px;
+  height: 55%;
+  background: rgba(0,0,0,0.15);
+  border-radius: 1px;
+}
+
+/* ============ 아랫턱 ============ */
+.lower-jaw { position: relative; z-index: 1; }
+
+.lower-gum {
+  background: linear-gradient(180deg, var(--gum-mid) 0%, var(--gum-bot) 100%);
+  padding: 0 20px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 7px;
+}
+
+/* ============ 이빨 공통 ============ */
+.upper-teeth-row,
+.lower-teeth-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 7px;
+}
+
+/* 윗니 (장식, 아래 방향) */
+.upper-tooth {
+  background: linear-gradient(180deg, #f0ebb5 0%, #fffce8 45%, #ffffff 100%);
+  border-radius: 6px 6px 50% 50% / 6px 6px 60% 60%;
+  box-shadow:
+    0 3px 0 #c8c088,
+    inset 2px 0 4px rgba(255,255,255,0.7),
+    inset -1px 0 3px rgba(0,0,0,0.08),
+    0 4px 10px rgba(0,0,0,0.2);
+  flex-shrink: 0;
+}
+
+/* 아랫니 (버튼, 위 방향) */
+.tooth-btn {
+  border: none;
+  border-radius: 50% 50% 6px 6px / 60% 60% 6px 6px;
+  background: linear-gradient(180deg, #ffffff 0%, #fffce8 45%, #f0ebb5 100%);
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transform-origin: bottom center;
+  transition: transform 0.12s ease-out, box-shadow 0.12s, background 0.1s;
+  box-shadow:
+    0 -3px 0 #c8c088,
+    inset 2px 0 5px rgba(255,255,255,0.8),
+    inset -1px 0 3px rgba(0,0,0,0.06),
+    0 6px 12px rgba(0,0,0,0.3);
+}
+
+/* 이빨 하이라이트 */
+.tooth-btn::before {
+  content: '';
+  position: absolute;
+  top: 12%; left: 20%;
+  width: 30%; height: 35%;
+  background: rgba(255,255,255,0.6);
   border-radius: 50%;
-}
-
-.tooth-btn:not(:disabled):hover {
-  background: rgba(255, 253, 231, 0.28);
-  border-color: rgba(255, 253, 231, 0.5);
-  transform: scaleY(0.93);
-  box-shadow: 0 0 10px rgba(255, 253, 231, 0.2);
-}
-
-.tooth-btn.pressed {
-  transform: scaleY(0.78) translateY(5px) !important;
-  background: rgba(34, 197, 94, 0.35);
-  border-color: var(--green);
-  box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
   pointer-events: none;
 }
 
+.tooth-btn:not(:disabled):hover {
+  transform: scaleY(1.07);
+  box-shadow:
+    0 -4px 0 #c8c088,
+    inset 2px 0 5px rgba(255,255,255,0.9),
+    0 8px 18px rgba(0,0,0,0.35);
+}
+
+/* 눌린 상태 (안전) */
+.tooth-btn.pressed {
+  transform: scaleY(0.62) translateY(6px) !important;
+  background: linear-gradient(180deg, #d4d090 0%, #c8c880 60%, #b8b870 100%) !important;
+  box-shadow: 0 -1px 0 #a0a060, 0 2px 5px rgba(0,0,0,0.25) !important;
+  pointer-events: none;
+}
+
+/* 함정 (물림) */
 .tooth-btn.dead {
-  background: rgba(239, 68, 68, 0.6) !important;
-  border-color: var(--red) !important;
-  transform: scaleY(0.7) translateY(6px) !important;
-  box-shadow: 0 0 15px rgba(239, 68, 68, 0.6) !important;
+  transform: scaleY(0.5) translateY(8px) !important;
+  background: linear-gradient(180deg, #ff9999 0%, #ef5555 60%, #cc3333 100%) !important;
+  box-shadow: 0 -1px 0 #aa0000, 0 0 22px rgba(239,68,68,0.6) !important;
   pointer-events: none;
 }
 
 .tooth-btn:disabled:not(.pressed):not(.dead) {
   cursor: not-allowed;
-  opacity: 0.35;
+  opacity: 0.4;
 }
 
-/* 상태 박스 */
+/* ============ 상태 박스 ============ */
 .status-box {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 1rem;
-  padding: 1rem 2rem;
-  font-size: 1.15rem;
+  padding: 0.9rem 2rem;
+  font-size: 1.1rem;
   font-weight: 700;
   text-align: center;
-  min-width: 280px;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  min-width: 260px;
+  transition: border-color 0.3s, box-shadow 0.3s, color 0.3s;
 }
 
 .status-box.danger {
   border-color: var(--red);
   color: var(--red);
-  box-shadow: 0 0 25px rgba(239, 68, 68, 0.35);
+  box-shadow: 0 0 24px rgba(239, 68, 68, 0.35);
   animation: status-pop 0.4s ease-out;
 }
 
@@ -215,7 +318,7 @@ body {
   100% { transform: scale(1); }
 }
 
-/* 카운트 */
+/* ============ 카운트 ============ */
 .tooth-count {
   color: var(--text-muted);
   font-size: 0.9rem;
@@ -225,26 +328,23 @@ body {
   font-size: 1.1rem;
 }
 
-/* 버튼 */
-.btn {
+/* ============ 버튼 ============ */
+.restart-btn {
   border: none;
   border-radius: 0.7rem;
   padding: 0.8rem 2rem;
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
-}
-.btn:active { transform: scale(0.96); }
-
-.btn-primary {
   background: linear-gradient(135deg, var(--accent), var(--accent2));
   color: #fff;
   box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
 }
-.btn-primary:hover { box-shadow: 0 6px 22px rgba(168, 85, 247, 0.6); }
+.restart-btn:hover { box-shadow: 0 6px 22px rgba(168, 85, 247, 0.6); }
+.restart-btn:active { transform: scale(0.96); }
 
-/* 화면 플래시 */
+/* ============ 화면 플래시 ============ */
 .bite-flash {
   position: fixed;
   inset: 0;
@@ -253,19 +353,18 @@ body {
   pointer-events: none;
   z-index: 999;
 }
-
 .bite-flash.active {
-  animation: screen-flash 0.5s ease-out forwards;
+  animation: screen-flash 0.55s ease-out forwards;
 }
-
 @keyframes screen-flash {
-  0%   { opacity: 0.55; }
+  0%   { opacity: 0.5; }
   100% { opacity: 0; }
 }
 
-/* 모바일 */
+/* ============ 모바일 ============ */
 @media (max-width: 480px) {
-  .tooth-btn { width: 26px; height: 34px; }
-  .teeth-overlay { gap: 3px; padding-bottom: 26%; }
-  .status-box { font-size: 1rem; padding: 0.8rem 1.2rem; min-width: 200px; }
+  .croc-main { padding: 1.2rem 0.8rem; gap: 1rem; }
+  .upper-gum  { gap: 5px; padding: 12px 12px 0; }
+  .lower-gum  { gap: 5px; padding: 0 12px 14px; }
+  .status-box { font-size: 0.95rem; padding: 0.7rem 1rem; min-width: 0; width: 90%; }
 }

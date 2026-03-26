@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>벌칙자 게임</title>
+  <script>if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light')</script>
   <link rel="stylesheet" href="style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
   <div class="particles" id="particles"></div>
 
-  <header>
+  <header class="app-header">
     <div class="logo-wrap">
       <div class="logo-icon">⚡</div>
       <div>
@@ -65,5 +66,6 @@
   </main>
 
   <script src="script.js"></script>
+  <script src="theme.js"></script>
 </body>
 </html>
