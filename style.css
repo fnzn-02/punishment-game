@@ -1,0 +1,141 @@
+/* style.css */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f9f9f9, #e0f7fa);
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+header {
+  padding: 2rem 1rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  color: #555;
+  margin-top: 0;
+}
+
+.game-menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.game-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 150px;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  text-decoration: none;
+  color: #333;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.game-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-weight: bold;
+}
+
+/* ========================================= */
+/* === 모바일(스마트폰) 전용 스타일 수정 === */
+/* ========================================= */
+@media screen and (max-width: 768px) {
+    /* 1. 전체 앱 틀 여백 조절 */
+    .ladder-app {
+        width: 100%;
+        max-width: 100%;
+        padding: 10px;
+        margin: 0;
+        box-shadow: none;
+    }
+
+    /* 2. 헤더(제목+홈버튼) 수정 */
+    .app-header {
+        flex-direction: column; /* 세로로 배치 */
+        gap: 10px;
+        margin-bottom: 1rem;
+    }
+    
+    .home-btn {
+        position: static; /* 왼쪽 고정 해제 */
+        transform: none;
+        width: 100%; /* 버튼 꽉 차게 */
+        text-align: center;
+        margin-bottom: 5px;
+    }
+
+    .app-header h1 {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+
+    /* 3. 컨트롤 버튼 영역 수정 (제일 중요!) */
+    .controls {
+        flex-direction: column; /* 버튼들 세로로 쌓기 */
+        height: auto; /* 높이 제한 해제 */
+        gap: 10px;
+        align-items: stretch; /* 가로 꽉 차게 */
+    }
+
+    /* 인원수 조절기 (+/-) 위치 수정 */
+    .player-stepper {
+        position: static; /* 중앙 고정 해제 */
+        transform: none;
+        justify-content: center;
+        width: 100%;
+        margin: 10px 0; /* 위아래 여백 */
+        padding: 5px;
+        background: #fff;
+    }
+
+    /* 버튼 그룹들 */
+    .controls-group {
+        flex-direction: column; /* 버튼들도 세로로 */
+        width: 100%;
+        gap: 5px;
+    }
+
+    /* 모든 버튼 꽉 차게 */
+    button {
+        width: 100%; 
+        height: 45px;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    /* 4. 사다리 게임판 가로 스크롤 (깨짐 방지) */
+    #game-board-content {
+        width: 100%;
+        overflow-x: auto; /* 화면보다 크면 옆으로 스크롤 */
+        padding-bottom: 20px;
+    }
+
+    /* 5. 룰렛 게임 크기 자동 조절 */
+    .roulette-board-wrapper {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1/1;
+    }
+}

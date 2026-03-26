@@ -1,0 +1,252 @@
+/* ladder.css */
+:root {
+    --accent-primary: #03c75a;
+    --accent-secondary: #ef5350; /* 빨간색 변수 */
+    --text-color: #333;
+    --border-color: #e0e0e0;
+    --bg-color: #f5f6f8;
+    --card-bg: #ffffff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
+    background: var(--bg-color);
+    display: flex; justify-content: center; padding: 1rem;
+}
+.ladder-app {
+    width: 100%; max-width: 1024px; margin: 1rem auto;
+    padding: 1.5rem; background: var(--card-bg);
+    border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    text-align: center;
+}
+.app-header {
+    display: flex; justify-content: center; align-items: center;
+    position: relative; margin-bottom: 1.5rem;
+}
+.app-header h1 { font-size: 1.8rem; }
+.home-btn {
+    position: absolute; left: 0; text-decoration: none;
+    color: #555; background: #f0f0f0; padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+}
+.controls {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+    min-height: 46px;
+}
+.controls-group {
+    display: flex;
+    gap: 0.5rem;
+}
+.player-stepper {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex; 
+    align-items: center;
+    border: 1px solid var(--border-color); 
+    border-radius: 8px;
+}
+.player-stepper button {
+    width: 44px; height: 44px; background: none; border: none;
+    font-size: 1.5rem; color: #555; cursor: pointer;
+}
+.player-stepper button:disabled { color: #ccc; cursor: not-allowed; }
+.player-count-display {
+    padding: 0 1rem; font-size: 1.2rem; font-weight: 500;
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+}
+button {
+    padding: 0.6rem 1rem; border-radius: 8px; border: none;
+    cursor: pointer; font-size: 0.95rem; font-weight: 500;
+    height: 46px;
+    transition: filter 0.2s;
+}
+button:hover {
+    filter: brightness(0.95);
+}
+button:disabled { opacity: 0.6; cursor: not-allowed; filter: none; }
+.alt { background:#f1f5f9; color:#333; border:1px solid #e6eef9; }
+.btn-red {
+    background-color: var(--accent-secondary);
+    color: white;
+    border: 1px solid #e53935;
+}
+.btn-green {
+    background-color: var(--accent-primary);
+    color: white;
+    border: 1px solid #02b350;
+}
+#game-board-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: #fafcfe;
+}
+#game-board-content {
+    display: inline-block;
+    text-align: left;
+}
+.row { position: relative; height: 60px; }
+.row.start-row { height: 40px; }
+.row input {
+    position: absolute; top: 50%; transform: translate(-50%, -50%);
+    width: 100px; padding: 0.7rem 0.5rem; border-radius: 8px;
+    border: 1px solid var(--border-color); text-align: center;
+    background: #fbfbfb;
+}
+.start-trigger {
+    position: absolute; top: 50%; transform: translate(-50%, -50%);
+    width: 32px; height: 32px; border-radius: 50%;
+    border: none; background: #fff; color: var(--text-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-size: 1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+}
+#ladder-wrap { 
+    position: relative; /* 오버레이의 기준점으로 설정 */
+    margin: -10px 0; 
+}
+#ladder-canvas { display: block; }
+
+/* ★★★ 최종 수정: 블러 효과(Frosted Glass) 가리개 ★★★ */
+#ladder-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* 블러 효과 */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px); /* Safari 브라우저 지원 */
+
+    /* 블러 효과를 지원하지 않는 브라우저를 위한 반투명 배경 */
+    background-color: rgba(255, 255, 255, 0.85);
+
+    color: #1e293b; /* 어두운 텍스트 색상 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600; /* 텍스트 굵게 */
+    line-height: 1.6;
+    border-radius: 8px;
+    
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+#ladder-overlay.visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.output {
+    margin-top: 1.5rem; font-weight: 600;
+    display:flex; flex-direction: column; gap: 0.5rem;
+    align-items: center; min-height: 40px;
+}
+.output .pair {
+    background: var(--card-bg); padding: 0.8rem 1.2rem; border-radius:10px;
+    width: 80%; max-width: 400px; border:1px solid #eef3fb;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+    display:flex; justify-content:space-between;
+}
+.bottom-row input.finished {
+    background: #fffbe6; border-color: #ffe58f; font-weight: bold;
+}
+
+/* ========================================= */
+/* === 모바일(스마트폰) 전용 스타일 수정 === */
+/* ========================================= */
+@media screen and (max-width: 768px) {
+    /* 1. 전체 앱 틀 여백 조절 */
+    .ladder-app {
+        width: 100%;
+        max-width: 100%;
+        padding: 10px;
+        margin: 0;
+        box-shadow: none;
+    }
+
+    /* 2. 헤더(제목+홈버튼) 수정 */
+    .app-header {
+        flex-direction: column; /* 세로로 배치 */
+        gap: 10px;
+        margin-bottom: 1rem;
+    }
+    
+    .home-btn {
+        position: static; /* 왼쪽 고정 해제 */
+        transform: none;
+        width: 100%; /* 버튼 꽉 차게 */
+        text-align: center;
+        margin-bottom: 5px;
+    }
+
+    .app-header h1 {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+
+    /* 3. 컨트롤 버튼 영역 수정 (제일 중요!) */
+    .controls {
+        flex-direction: column; /* 버튼들 세로로 쌓기 */
+        height: auto; /* 높이 제한 해제 */
+        gap: 10px;
+        align-items: stretch; /* 가로 꽉 차게 */
+    }
+
+    /* 인원수 조절기 (+/-) 위치 수정 */
+    .player-stepper {
+        position: static; /* 중앙 고정 해제 */
+        transform: none;
+        justify-content: center;
+        width: 100%;
+        margin: 10px 0; /* 위아래 여백 */
+        padding: 5px;
+        background: #fff;
+    }
+
+    /* 버튼 그룹들 */
+    .controls-group {
+        flex-direction: column; /* 버튼들도 세로로 */
+        width: 100%;
+        gap: 5px;
+    }
+
+    /* 모든 버튼 꽉 차게 */
+    button {
+        width: 100%; 
+        height: 45px;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    /* 4. 사다리 게임판 가로 스크롤 (깨짐 방지) */
+    #game-board-content {
+        width: 100%;
+        overflow-x: auto; /* 화면보다 크면 옆으로 스크롤 */
+        padding-bottom: 20px;
+    }
+
+    /* 5. 룰렛 게임 크기 자동 조절 */
+    .roulette-board-wrapper {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1/1;
+    }
+}
