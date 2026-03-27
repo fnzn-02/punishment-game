@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>반응속도 게임</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light')</script>
+  <link rel="stylesheet" href="reaction.css">
+</head>
+<body>
+  <div class="app-wrap">
+    <header class="app-header">
+      <a href="../../index.html" class="home-btn">← 홈</a>
+      <h1>⚡ 반응속도 게임</h1>
+    </header>
+
+    <main class="reaction-main">
+
+      <!-- 설정 화면 -->
+      <div class="setup-panel" id="setup-panel">
+        <p class="setup-desc">
+          신호가 뜨면 최대한 빨리 터치!<br>
+          가장 느린 사람이 벌칙을 받습니다.
+        </p>
+
+        <div class="setting-row">
+          <label>플레이어 수</label>
+          <div class="player-stepper">
+            <button id="btn-dec">−</button>
+            <span id="player-count">2</span>
+            <button id="btn-inc">+</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <label>라운드 수</label>
+          <div class="range-select">
+            <button class="round-btn active" data-rounds="1">1회</button>
+            <button class="round-btn" data-rounds="2">2회</button>
+            <button class="round-btn" data-rounds="3">3회</button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="start-btn">게임 시작!</button>
+      </div>
+
+      <!-- 게임 화면 -->
+      <div class="game-panel" id="game-panel" style="display:none">
+        <div class="turn-badge" id="turn-badge"></div>
+        <div class="reaction-area" id="reaction-area">
+          <div class="reaction-icon" id="reaction-icon">⚡</div>
+          <div class="reaction-msg" id="reaction-msg">준비되면 터치!</div>
+          <div class="reaction-sub" id="reaction-sub"></div>
+        </div>
+        <button class="btn btn-ghost" id="restart-btn">🔄 처음부터</button>
+      </div>
+
+      <!-- 결과 화면 -->
+      <div class="result-panel" id="result-panel" style="display:none">
+        <h2 class="result-title">결과 발표!</h2>
+        <div class="result-list" id="result-list"></div>
+        <div class="loser-box" id="loser-box"></div>
+        <button class="btn btn-primary" id="again-btn">🔄 다시하기</button>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="reaction.js"></script>
+  <script src="../../theme.js"></script>
+</body>
+</html>

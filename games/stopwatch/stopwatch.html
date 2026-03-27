@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>스탑워치 게임</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light')</script>
+  <link rel="stylesheet" href="stopwatch.css">
+</head>
+<body>
+  <div class="app-wrap">
+    <header class="app-header">
+      <a href="../../index.html" class="home-btn">← 홈</a>
+      <h1>⏱️ 스탑워치 게임</h1>
+    </header>
+
+    <main class="sw-main">
+
+      <!-- 설정 화면 -->
+      <div class="setup-panel" id="setup-panel">
+        <p class="setup-desc">
+          화면을 보지 말고 머릿속으로 시간을 세세요!<br>
+          목표 시간에 가장 가깝게 멈춘 사람이 안전!
+        </p>
+        <div class="setting-row">
+          <label>플레이어 수</label>
+          <div class="player-stepper">
+            <button id="btn-dec">−</button>
+            <span id="player-count">2</span>
+            <button id="btn-inc">+</button>
+          </div>
+        </div>
+        <div class="setting-row">
+          <label>목표 시간</label>
+          <div class="range-select">
+            <button class="time-btn active" data-sec="5">5초</button>
+            <button class="time-btn" data-sec="7">7초</button>
+            <button class="time-btn" data-sec="9">9초</button>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="start-btn">게임 시작!</button>
+      </div>
+
+      <!-- 게임 화면 -->
+      <div class="game-panel" id="game-panel" style="display:none">
+        <div class="turn-badge" id="turn-badge"></div>
+        <div class="sw-area" id="sw-area">
+          <div class="sw-icon" id="sw-icon">⏱️</div>
+          <div class="sw-msg" id="sw-msg">터치해서 시작</div>
+          <div class="sw-sub" id="sw-sub"></div>
+          <div class="target-label" id="target-label"></div>
+        </div>
+        <button class="btn btn-ghost" id="restart-btn">🔄 처음부터</button>
+      </div>
+
+      <!-- 결과 화면 -->
+      <div class="result-panel" id="result-panel" style="display:none">
+        <h2 class="result-title">결과 발표!</h2>
+        <div class="result-list" id="result-list"></div>
+        <div class="loser-box" id="loser-box"></div>
+        <button class="btn btn-primary" id="again-btn">🔄 다시하기</button>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="stopwatch.js"></script>
+  <script src="../../theme.js"></script>
+</body>
+</html>

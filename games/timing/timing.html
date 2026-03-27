@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>타이밍 게임</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light')</script>
+  <link rel="stylesheet" href="timing.css">
+</head>
+<body>
+  <div class="app-wrap">
+    <header class="app-header">
+      <a href="../../index.html" class="home-btn">← 홈</a>
+      <h1>🎯 타이밍 게임</h1>
+    </header>
+
+    <main class="timing-main">
+
+      <!-- 설정 화면 -->
+      <div class="setup-panel" id="setup-panel">
+        <p class="setup-desc">
+          움직이는 바늘을 초록 구역에 멈춰라!<br>
+          가장 빗나간 사람이 벌칙을 받습니다.
+        </p>
+        <div class="setting-row">
+          <label>플레이어 수</label>
+          <div class="player-stepper">
+            <button id="btn-dec">−</button>
+            <span id="player-count">2</span>
+            <button id="btn-inc">+</button>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="start-btn">게임 시작!</button>
+      </div>
+
+      <!-- 게임 화면 -->
+      <div class="game-panel" id="game-panel" style="display:none">
+        <div class="turn-badge" id="turn-badge"></div>
+        <div class="track-wrap">
+          <div class="track" id="track">
+            <div class="target-zone" id="target-zone"></div>
+            <div class="needle" id="needle"></div>
+          </div>
+        </div>
+        <div class="tap-area" id="tap-area">
+          <div class="tap-icon" id="tap-icon">👆</div>
+          <div class="tap-msg" id="tap-msg">터치해서 시작</div>
+          <div class="tap-sub" id="tap-sub"></div>
+        </div>
+        <button class="btn btn-ghost" id="restart-btn">🔄 처음부터</button>
+      </div>
+
+      <!-- 결과 화면 -->
+      <div class="result-panel" id="result-panel" style="display:none">
+        <h2 class="result-title">결과 발표!</h2>
+        <div class="result-list" id="result-list"></div>
+        <div class="loser-box" id="loser-box"></div>
+        <button class="btn btn-primary" id="again-btn">🔄 다시하기</button>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="timing.js"></script>
+  <script src="../../theme.js"></script>
+</body>
+</html>
