@@ -51,19 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const wrapper = document.createElement('div');
             wrapper.className = 'draw-input-wrapper';
             
-            const colorName = playerColorNames[i % playerColorNames.length];
-            const colorHex = playerColors[i % playerColorNames.length];
-
             const label = document.createElement('label');
-            label.textContent = colorName;
-            label.style.color = colorHex;
+            label.textContent = `${i + 1}번`;
             wrapper.appendChild(label);
 
             const input = document.createElement('input');
             input.type = 'text';
             input.placeholder = `결과 입력`;
             input.id = `option-${i}`;
-            input.style.borderColor = colorHex;
             
             if (existingValues[i]) input.value = existingValues[i];
             wrapper.appendChild(input);
@@ -113,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const options = Array.from(inputsContainer.querySelectorAll('input')).map(input => input.value.trim());
 
         if (options.some(option => option === '')) {
-            alert('모든 색상의 결과를 입력해주세요!');
+            alert('모든 결과를 입력해주세요!');
             return;
         }
 
