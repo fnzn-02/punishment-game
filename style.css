@@ -95,17 +95,57 @@ header p {
 }
 
 /* ==========================================
-   게임 메뉴 그리드
+   게임 메뉴
    ========================================== */
 .game-menu {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
   max-width: 900px;
   margin: 0 auto;
   padding: 1rem 2rem 4rem;
+}
+
+.game-section {}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.section-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.section-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+
+.section-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.2rem;
 }
 
 /* ==========================================
@@ -324,7 +364,8 @@ html[data-theme="light"] .particle { background: #a855f7; }
 @media (max-width: 500px) {
   h1 { font-size: 1.8rem; }
   .logo-wrap { flex-direction: column; gap: 0.4rem; text-align: center; }
-  .game-menu { grid-template-columns: repeat(2, 1fr); padding: 1rem 1rem 3rem; }
+  .game-menu { padding: 1rem 1rem 3rem; gap: 2rem; }
+  .game-grid { grid-template-columns: repeat(2, 1fr); }
   .game-card { padding: 1.5rem 0.8rem; }
   .game-card .icon { font-size: 2.4rem; }
 }
