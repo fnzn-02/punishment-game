@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>아이콘 생성기</title>
+  <style>
+    body { font-family: sans-serif; background: #111; color: #fff; padding: 2rem; }
+    canvas { display: block; margin: 0.5rem 0; border-radius: 12px; }
+    button { margin: 0.3rem; padding: 0.5rem 1rem; background: #7c3aed; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+    .group { margin-bottom: 1.5rem; }
+    h3 { margin-bottom: 0.5rem; color: #c084fc; }
+  </style>
+</head>
+<body>
+  <h2>아이콘 생성기</h2>
+  <p style="color:#888">아래 버튼으로 PNG 다운로드 후 icons/ 폴더에 저장하세요.</p>
+
+  <div class="group">
+    <h3>512×512 (PWA)</h3>
+    <canvas id="c512" width="512" height="512"></canvas>
+    <button onclick="download('c512','icon-512.png')">icon-512.png 다운로드</button>
+  </div>
+  <div class="group">
+    <h3>192×192 (PWA)</h3>
+    <canvas id="c192" width="192" height="192"></canvas>
+    <button onclick="download('c192','icon-192.png')">icon-192.png 다운로드</button>
+  </div>
+  <div class="group">
+    <h3>180×180 (iOS apple-touch-icon)</h3>
+    <canvas id="c180" width="180" height="180"></canvas>
+    <button onclick="download('c180','apple-touch-icon.png')">apple-touch-icon.png 다운로드</button>
+  </div>
+
+  <script>
+    function drawIcon(canvas) {
+      const s = canvas.width;
+      const ctx = canvas.getContext('2d');
+      const r = s * 0.188; // border-radius 비율
+
+      // Rounded rect clip
+      ctx.beginPath();
+      ctx.moveTo(r, 0);
+      ctx.lineTo(s - r, 0);
+      ctx.quadraticCurveTo(s, 0, s, r);
+      ctx.lineTo(s, s - r);
+      ctx.quadraticCurveTo(s, s, s - r, s);
+      ctx.lineTo(r, s);
+      ctx.quadraticCurveTo(0, s, 0, s - r);
+      ctx.lineTo(0, r);
+      ctx.quadraticCurveTo(0, 0, r, 0);
+      ctx.closePath();
+      ctx.clip();
+
+      // Background gradient
+      const bg = ctx.createLinearGradient(0, 0, s, s);
+      bg.addColorStop(0, '#1a1040');
+      bg.addColorStop(1, '#0a0a12');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, s, s);
+
+      // Lightning bolt (path scaled to canvas size)
+      // Original viewBox: 0 0 512 512
+      const scale = s / 512;
+      const points = [
+        [295, 58], [138, 282], [240, 282],
+        [178, 454], [388, 218], [278, 218]
+      ];
+
+      // Glow pass
+      ctx.save();
+      ctx.shadowColor = '#c084fc';
+      ctx.shadowBlur = 18 * scale;
+      const boltGrad = ctx.createLinearGradient(0, 0, s * 0.6, s);
+      boltGrad.addColorStop(0, '#f0e6ff');
+      boltGrad.addColorStop(1, '#a855f7');
+      ctx.fillStyle = boltGrad;
+      ctx.beginPath();
+      points.forEach(([x, y], i) => {
+        const px = x * scale, py = y * scale;
+        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+      });
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    ['c512', 'c192', 'c180'].forEach(id => drawIcon(document.getElementById(id)));
+
+    function download(id, filename) {
+      const a = document.createElement('a');
+      a.href = document.getElementById(id).toDataURL('image/png');
+      a.download = filename;
+      a.click();
+    }
+  </script>
+</body>
+</html>

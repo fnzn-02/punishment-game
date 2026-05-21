@@ -10,8 +10,8 @@
     p.style.bottom = '-10px';
     p.style.animationDuration = (6 + Math.random() * 10) + 's';
     p.style.animationDelay = (Math.random() * 8) + 's';
-    p.style.width = p.style.height = (1 + Math.random() * 3) + 'px';
-    p.style.opacity = (0.2 + Math.random() * 0.5).toString();
+    p.style.width = p.style.height = (1.5 + Math.random() * 3.5) + 'px';
+    p.style.opacity = (0.35 + Math.random() * 0.5).toString();
     container.appendChild(p);
   }
 })();
