@@ -69,11 +69,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function buildJarPapers() {
         drawJarPapers.innerHTML = '';
-        const jarPaperColors = ['#fdfd96', '#add8e6', '#ffb3ba', '#bada55', '#d4a5a5', '#e9c46a', '#a2d2ff', '#cdb4db'];
         for (let i = 0; i < currentPlayers; i++) {
             const paper = document.createElement('div');
             paper.style.setProperty('--angle', (Math.random() - 0.5) * 30);
-            paper.style.backgroundColor = jarPaperColors[i % jarPaperColors.length];
+            paper.style.backgroundColor = playerColors[i % playerColors.length];
             drawJarPapers.appendChild(paper);
         }
     }
