@@ -19,9 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const playerBadges = document.getElementById('player-badges');
   const hintArrow   = document.getElementById('hint-arrow');
   const rangeLabel  = document.getElementById('range-label');
-  const triesBar    = document.getElementById('tries-bar');
-  const triesDots   = document.getElementById('tries-dots');
-  const triesLabel  = document.getElementById('tries-label');
   const guessInput  = document.getElementById('guess-input');
   const submitBtn   = document.getElementById('submit-btn');
   const historyEl   = document.getElementById('history');
@@ -33,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 설정 변수
   let maxRange   = 50;
-  let maxTries   = 7;
   let players    = 2;
 
   // 게임 상태
@@ -49,15 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       maxRange = parseInt(btn.dataset.range);
-    });
-  });
-
-  // 시도 버튼
-  document.querySelectorAll('.tries-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tries-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      maxTries = parseInt(btn.dataset.tries);
     });
   });
 
@@ -94,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
     guessInput.max        = maxRange;
 
     buildBadges();
-    buildTriesDots();
     updateActivePlayer();
     guessInput.focus();
   }
@@ -114,32 +100,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function buildTriesDots() {
-    if (maxTries === 0) {
-      triesBar.style.display = 'none';
-      return;
-    }
-    triesBar.style.display = 'flex';
-    triesDots.innerHTML = '';
-    for (let i = 0; i < maxTries; i++) {
-      const dot = document.createElement('div');
-      dot.className = 'try-dot';
-      dot.id = `dot-${i}`;
-      triesDots.appendChild(dot);
-    }
-    updateTriesLabel();
-  }
-
   function updateActivePlayer() {
     document.querySelectorAll('.player-badge').forEach((b, i) => {
       b.classList.toggle('active', i === currentPlayer);
     });
-  }
-
-  function updateTriesLabel() {
-    if (maxTries === 0) return;
-    const left = maxTries - triesUsed;
-    triesLabel.textContent = `남은 시도: ${left}번`;
   }
 
   submitBtn.addEventListener('click', handleGuess);
@@ -156,14 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     guessInput.value = '';
-    triesUsed++;
-
-    // 시도 점 업데이트
-    if (maxTries > 0) {
-      const dot = document.getElementById(`dot-${triesUsed - 1}`);
-      if (dot) dot.classList.add('used');
-      updateTriesLabel();
-    }
 
     if (navigator.vibrate) navigator.vibrate(30);
 
@@ -196,12 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
     currentPlayer = (currentPlayer + 1) % players;
     updateActivePlayer();
 
-    // 시도 초과 → 패배 처리 (틀린 플레이어가 벌칙)
-    if (maxTries > 0 && triesUsed >= maxTries) {
-      const loserIdx = currentPlayer === 0 ? players - 1 : currentPlayer - 1;
-      setTimeout(() => showLose(loserIdx), 400);
-    }
-
     guessInput.focus();
   }
 
@@ -220,16 +170,4 @@ document.addEventListener('DOMContentLoaded', () => {
     resultPanel.style.display = 'flex';
   }
 
-  function showLose(loserIdx) {
-    const loserColor = PLAYER_COLORS[loserIdx].text;
-
-    answerReveal.textContent = `정답: ${answer}`;
-    resultIcon.textContent   = '💀';
-    resultTitle.textContent  = '시도 초과!';
-    resultTitle.style.color  = '#ef4444';
-    resultDesc.innerHTML     = `마지막으로 틀린 <strong style="color:${loserColor}">${loserIdx + 1}번 플레이어</strong>가 벌칙 실행!`;
-
-    gamePanel.style.display   = 'none';
-    resultPanel.style.display = 'flex';
-  }
 });
