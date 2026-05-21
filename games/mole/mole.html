@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>두더지 잡기</title>
+    <script>if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light')</script>
+    <link rel="stylesheet" href="mole.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+</head>
+<body>
+<div class="app-wrap">
+    <header class="app-header">
+        <a href="../../index.html" class="home-btn">← 홈</a>
+        <h1>🐹 두더지 잡기</h1>
+    </header>
+
+    <!-- Setup -->
+    <div id="setup-panel" class="panel">
+        <div class="setup-card">
+            <div class="setup-section">
+                <p class="section-label">인원 수</p>
+                <div class="player-stepper">
+                    <button id="btn-dec">−</button>
+                    <div class="count-display"><span id="player-count">2</span>명</div>
+                    <button id="btn-inc">＋</button>
+                </div>
+            </div>
+            <div class="setup-section">
+                <p class="section-label">제한 시간</p>
+                <div class="time-selector">
+                    <button class="time-btn active" data-time="10">10초</button>
+                    <button class="time-btn" data-time="20">20초</button>
+                    <button class="time-btn" data-time="30">30초</button>
+                </div>
+            </div>
+            <div class="setup-section">
+                <p class="section-label">속도</p>
+                <div class="time-selector">
+                    <button class="speed-btn active" data-speed="1">보통</button>
+                    <button class="speed-btn" data-speed="2">빠름</button>
+                </div>
+            </div>
+            <button id="start-btn" class="btn-primary">게임 시작</button>
+        </div>
+    </div>
+
+    <!-- Ready Overlay -->
+    <div id="ready-overlay" class="ready-overlay">
+        <div class="ready-box">
+            <p id="ready-prev" class="ready-prev"></p>
+            <p id="ready-name">1번의 차례!</p>
+            <p class="ready-hint">탭해서 시작 👆</p>
+        </div>
+    </div>
+
+    <!-- Game -->
+    <div id="game-panel" class="panel" style="display:none">
+        <div class="hud">
+            <div class="hud-cell">
+                <span id="turn-badge" class="turn-badge">1번 차례</span>
+            </div>
+            <div class="hud-cell center">
+                <span id="score-val">0</span>
+                <span class="hud-label">점</span>
+            </div>
+            <div class="hud-cell right">
+                <span id="timer-val">30</span>
+                <span class="hud-label">초</span>
+            </div>
+        </div>
+        <div class="timer-track">
+            <div id="timer-bar" class="timer-bar"></div>
+        </div>
+        <div id="combo-wrap" class="combo-wrap">
+            <span id="combo-text">2 COMBO!</span>
+        </div>
+        <div id="mole-grid" class="mole-grid"></div>
+    </div>
+
+    <!-- Result -->
+    <div id="result-panel" class="panel" style="display:none">
+        <div class="result-card">
+            <h2 class="result-title">결과</h2>
+            <div id="result-list" class="result-list"></div>
+            <div id="loser-box" class="loser-box"></div>
+            <button id="again-btn" class="btn-primary">다시 하기</button>
+        </div>
+    </div>
+</div>
+
+<script src="mole.js"></script>
+<script src="../../theme.js"></script>
+</body>
+</html>
