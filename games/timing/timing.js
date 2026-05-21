@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let animFrame = null;
   let phase = 'idle'; // idle | running | done
 
-  // 목표 구역: 41% ~ 59% (중앙 18%)
-  const TARGET_LEFT = 44;
-  const TARGET_RIGHT = 56;
+  let TARGET_LEFT = 44;
+  let TARGET_RIGHT = 56;
   const TARGET_CENTER = 50;
+  const targetZoneEl = document.getElementById('target-zone');
 
   btnDec.addEventListener('click', () => {
     if (playerCount > 2) { playerCount--; playerCountEl.textContent = playerCount; }
@@ -52,6 +52,11 @@ document.addEventListener('DOMContentLoaded', () => {
       inZone: false
     }));
     currentIdx = 0;
+
+    TARGET_LEFT = 44;
+    TARGET_RIGHT = 56;
+    targetZoneEl.style.left = '';
+    targetZoneEl.style.width = '';
 
     setupPanel.style.display = 'none';
     resultPanel.style.display = 'none';
@@ -142,10 +147,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function showResult() {
     stopAnimation();
+
+    const allInZone = players.every(p => p.inZone);
+
+    if (allInZone) {
+      // 모두 구역 안 — 구역 줄이고 다시 하기
+      TARGET_LEFT = 46;
+      TARGET_RIGHT = 54;
+      targetZoneEl.style.left = '46%';
+      targetZoneEl.style.width = '8%';
+
+      currentIdx = 0;
+      players.forEach(p => { p.deviation = null; p.inZone = false; });
+      turnBadge.textContent = '🎉 모두 성공! 다시 도전!';
+      setTimeout(() => nextTurn(), 1500);
+      return;
+    }
+
     gamePanel.style.display = 'none';
     resultPanel.style.display = 'flex';
 
-    // 빗나감 적은 순으로 정렬
     const sorted = [...players].sort((a, b) => a.deviation - b.deviation);
 
     resultList.innerHTML = '';

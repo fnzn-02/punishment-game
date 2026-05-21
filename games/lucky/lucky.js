@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let capsuleCount = 0;
   let isAnimating = false;
 
-  const CAPSULE_EMOJIS = ['🟣','🔵','🟢','🟡','🟠','🔴','⚪','🩵','🩶','💜'];
 
   // 플레이어 수 조절
   btnDec.addEventListener('click', () => {
@@ -82,8 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function buildCapsules() {
     capsuleGrid.innerHTML = '';
-    // Shuffle emoji pool
-    const emojiPool = [...CAPSULE_EMOJIS].sort(() => Math.random() - 0.5);
     for (let i = 0; i < capsuleCount; i++) {
       const el = document.createElement('div');
       el.className = 'capsule-item';
@@ -132,8 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (allTrapsFound || activePlayers.length === 0) {
           showResult(true, currentPlayer, players.filter(p => p.eliminated));
         } else {
-          // 게임 계속
-          advanceTurn();
+          // 게임 계속 — 탈락자 제거 후 같은 인덱스 위치가 다음 플레이어
+          const remaining = players.filter(p => !p.eliminated);
+          currentTurn = currentTurn % remaining.length;
+          updateTurnDisplay();
           isAnimating = false;
         }
       }, 700);
