@@ -1,4 +1,4 @@
-const CACHE = 'punishment-game-v2';
+const CACHE = 'punishment-game-v3';
 
 const ASSETS = [
   './',
@@ -8,6 +8,7 @@ const ASSETS = [
   './theme.js',
   './manifest.json',
   './icons/icon.svg',
+  './icons/favicon.ico',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/apple-touch-icon.png',
