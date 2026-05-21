@@ -41,6 +41,9 @@ const ASSETS = [
   './games/dice/dice.html',
   './games/dice/dice.css',
   './games/dice/dice.js',
+  './games/tictactoe/tictactoe.html',
+  './games/tictactoe/tictactoe.css',
+  './games/tictactoe/tictactoe.js',
 ];
 
 self.addEventListener('install', e => {

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>틱택토</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="../../manifest.json">
+  <meta name="theme-color" content="#7c3aed">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="벌칙게임">
+  <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+  <script>if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light')</script>
+  <link rel="stylesheet" href="tictactoe.css">
+</head>
+<body>
+  <div class="app-wrap">
+    <header class="app-header">
+      <a href="../../index.html" class="home-btn">← 홈</a>
+      <h1>⭕ 틱택토</h1>
+    </header>
+
+    <main class="ttt-main">
+
+      <!-- 설정 화면 -->
+      <div class="setup-panel" id="setup-panel">
+        <p class="setup-desc">2명이 번갈아 두고<br>한 줄을 먼저 완성하면 승리!</p>
+        <div class="name-inputs">
+          <div class="name-row">
+            <span class="mark x-mark">✕</span>
+            <input id="name1" class="name-input" type="text" placeholder="플레이어 1 이름" maxlength="8">
+          </div>
+          <div class="name-row">
+            <span class="mark o-mark">○</span>
+            <input id="name2" class="name-input" type="text" placeholder="플레이어 2 이름" maxlength="8">
+          </div>
+        </div>
+        <button class="btn btn-primary" id="start-btn">게임 시작!</button>
+      </div>
+
+      <!-- 게임 화면 -->
+      <div class="game-panel" id="game-panel" style="display:none">
+        <div class="turn-badge" id="turn-badge"></div>
+        <div class="board" id="board">
+          <div class="cell" data-i="0"></div>
+          <div class="cell" data-i="1"></div>
+          <div class="cell" data-i="2"></div>
+          <div class="cell" data-i="3"></div>
+          <div class="cell" data-i="4"></div>
+          <div class="cell" data-i="5"></div>
+          <div class="cell" data-i="6"></div>
+          <div class="cell" data-i="7"></div>
+          <div class="cell" data-i="8"></div>
+        </div>
+        <button class="btn btn-ghost" id="restart-btn">🔄 처음부터</button>
+      </div>
+
+      <!-- 결과 화면 -->
+      <div class="result-panel" id="result-panel" style="display:none">
+        <div class="result-icon" id="result-icon"></div>
+        <h2 class="result-title" id="result-title"></h2>
+        <div class="result-box" id="result-box"></div>
+        <div class="result-btns">
+          <button class="btn btn-primary" id="again-btn">🔄 다시하기</button>
+          <button class="btn btn-ghost" id="rename-btn">👤 이름 바꾸기</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="tictactoe.js"></script>
+  <script src="../../theme.js"></script>
+</body>
+</html>
