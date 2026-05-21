@@ -1,4 +1,4 @@
-const CACHE = 'punishment-game-v1';
+const CACHE = 'punishment-game-v2';
 
 const ASSETS = [
   './',
