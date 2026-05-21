@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>주사위 대결</title>
+  <script>if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light')</script>
+  <link rel="stylesheet" href="dice.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+</head>
+<body>
+<div class="app-wrap">
+  <header class="app-header">
+    <a href="../../index.html" class="home-btn">← 홈</a>
+    <h1>🎲 주사위 대결</h1>
+  </header>
+
+  <!-- Setup -->
+  <div id="setup-panel" class="panel">
+    <div class="setup-card">
+      <div class="setup-section">
+        <p class="section-label">인원 수</p>
+        <div class="player-stepper">
+          <button id="btn-dec">−</button>
+          <div class="count-display"><span id="player-count">2</span>명</div>
+          <button id="btn-inc">＋</button>
+        </div>
+      </div>
+      <div class="setup-section">
+        <p class="section-label">벌칙 규칙</p>
+        <div class="rule-selector">
+          <button class="rule-btn active" data-rule="low">낮은 숫자 벌칙</button>
+          <button class="rule-btn" data-rule="high">높은 숫자 벌칙</button>
+        </div>
+      </div>
+      <button id="start-btn" class="btn-primary">게임 시작</button>
+    </div>
+  </div>
+
+  <!-- Game -->
+  <div id="game-panel" class="panel" style="display:none">
+    <div class="game-hud">
+      <span id="turn-badge" class="turn-badge">1번의 차례</span>
+      <span id="rule-badge" class="rule-badge">낮은 숫자 벌칙</span>
+    </div>
+
+    <div class="dice-stage">
+      <div class="dice-wrap">
+        <div class="dice-scene">
+          <div id="dice" class="dice">
+            <div class="face face-1"><span class="dot c"></span></div>
+            <div class="face face-2"><span class="dot tr"></span><span class="dot bl"></span></div>
+            <div class="face face-3"><span class="dot tr"></span><span class="dot c"></span><span class="dot bl"></span></div>
+            <div class="face face-4"><span class="dot tl"></span><span class="dot tr"></span><span class="dot bl"></span><span class="dot br"></span></div>
+            <div class="face face-5"><span class="dot tl"></span><span class="dot tr"></span><span class="dot c"></span><span class="dot bl"></span><span class="dot br"></span></div>
+            <div class="face face-6"><span class="dot tl"></span><span class="dot tr"></span><span class="dot ml"></span><span class="dot mr"></span><span class="dot bl"></span><span class="dot br"></span></div>
+          </div>
+        </div>
+        <div class="dice-floor-shadow"></div>
+      </div>
+      <div id="result-reveal" class="result-reveal"></div>
+    </div>
+
+    <button id="roll-btn" class="roll-btn btn-primary">🎲 굴리기</button>
+    <div id="score-list" class="score-list"></div>
+  </div>
+
+  <!-- Result -->
+  <div id="result-panel" class="panel" style="display:none">
+    <div class="result-card">
+      <h2 class="result-title">결과</h2>
+      <div id="result-list" class="result-list"></div>
+      <div id="loser-box" class="loser-box"></div>
+      <div class="result-btns">
+        <button id="reroll-btn" class="btn-primary" style="display:none">🎲 동점자 재대결</button>
+        <button id="again-btn" class="btn-ghost">처음부터</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="dice.js"></script>
+<script src="../../theme.js"></script>
+</body>
+</html>
