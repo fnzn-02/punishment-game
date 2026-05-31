@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let playerCount = 2;
   let selectedTime = 10;
   let selectedSpeed = 1;
+  let selectedSound = 1;
   let players = [];
   let currentIdx = 0;
   let score = 0;
@@ -96,6 +97,13 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.classList.add('active');
       selectedSpeed = +btn.dataset.speed;
     });
+  });
+
+  const soundToggleBtn = document.getElementById('sound-toggle');
+  soundToggleBtn.addEventListener('click', () => {
+    selectedSound = selectedSound ? 0 : 1;
+    soundToggleBtn.textContent = selectedSound ? '🔊 ON' : '🔇 OFF';
+    soundToggleBtn.classList.toggle('off', !selectedSound);
   });
 
   // --- Grid ---
@@ -288,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => scoreVal.classList.remove('bump'), 150);
 
     if (navigator.vibrate) navigator.vibrate(combo >= 3 ? [30, 10, 30] : [30]);
-    playHit(combo);
+    if (selectedSound) playHit(combo);
     spawnParticles(e.clientX, e.clientY);
     floatScore(e.clientX, e.clientY, `+${pts}`);
 

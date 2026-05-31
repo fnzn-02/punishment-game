@@ -1,0 +1,82 @@
+:root {
+  --bg: #0d0d0f; --bg2: #13131a; --card-bg: #1a1a2e; --card-border: #2a2a4a;
+  --accent: #7c3aed; --accent2: #a855f7; --neon: #c084fc;
+  --text: #f0f0f8; --text-muted: #888;
+}
+html[data-theme="light"] {
+  --bg: #f4f2ff; --bg2: #fff; --card-bg: #fff; --card-border: #e0d8f8;
+  --text: #1a1a2e; --text-muted: #666; --neon: #7c3aed;
+}
+html[data-theme="light"] body { background: #f4f2ff; color: #1a1a2e; }
+html[data-theme="light"] .app-header { background: #fff; border-bottom-color: #e0d8f8; }
+html[data-theme="light"] .app-header h1 { background: linear-gradient(135deg,#1a1a2e,#7c3aed); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+html[data-theme="light"] .home-btn { color:#666; border-color:#e0d8f8; }
+html[data-theme="light"] .setup-desc { color:#444; }
+html[data-theme="light"] .player-stepper { background:#f4f2ff; border-color:#e0d8f8; }
+html[data-theme="light"] .name-input { background:#f4f2ff; border-color:#e0d8f8; color:#1a1a2e; }
+html[data-theme="light"] .btn-ghost { background:#f4f2ff; color:#666; border-color:#e0d8f8; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI','Apple SD Gothic Neo',sans-serif; min-height: 100vh; overflow: hidden; }
+
+.app-wrap { display: flex; flex-direction: column; height: 100vh; }
+
+.app-header {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0.85rem 1.5rem; flex-shrink: 0;
+  border-bottom: 1px solid var(--card-border); background: var(--bg2);
+}
+.home-btn { text-decoration: none; color: var(--text-muted); font-size: 0.9rem; padding: 0.4rem 0.9rem; border: 1px solid var(--card-border); border-radius: 0.5rem; transition: color .2s, border-color .2s; }
+.home-btn:hover { color: var(--neon); border-color: var(--accent2); }
+.app-header h1 { font-size: 1.3rem; font-weight: 800; background: linear-gradient(135deg,#fff,var(--neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+.panel { flex: 1; display: flex; flex-direction: column; align-items: center; overflow: hidden; }
+
+/* 설정 */
+.setup-panel { flex: 1; align-self: stretch; padding: 1.5rem; gap: 1.2rem; justify-content: flex-start; overflow-y: auto; }
+.setup-panel > * { flex-shrink: 0; }
+.setup-desc { color: var(--text-muted); text-align: center; line-height: 1.7; font-size: 0.95rem; }
+
+.player-stepper { display: flex; align-items: center; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 0.8rem; overflow: hidden; }
+.player-stepper button { width: 48px; height: 48px; background: none; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer; transition: color .2s, background .2s; }
+.player-stepper button:hover { color: var(--neon); background: rgba(168,85,247,.1); }
+#player-count { min-width: 56px; text-align: center; font-size: 1.4rem; font-weight: 800; color: var(--neon); border-left: 1px solid var(--card-border); border-right: 1px solid var(--card-border); line-height: 48px; }
+
+.name-list { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 0.6rem; }
+.setup-tools { display: flex; gap: 0.6rem; max-width: 360px; width: 100%; }
+.btn-sm { padding: 0.4rem 0.9rem; font-size: 0.88rem; max-width: none; width: auto; flex: 1; }
+.sound-toggle-row { display: flex; align-items: center; gap: 0.8rem; font-size: 0.95rem; color: var(--text-muted); }
+.sound-toggle { padding: 0.4rem 1.1rem; border-radius: 999px; border: 1px solid var(--card-border); background: var(--card-bg); color: var(--neon); font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: background .2s, border-color .2s; font-family: inherit; }
+.sound-toggle.off { color: var(--text-muted); border-color: var(--card-border); }
+.name-input { width: 100%; padding: 0.7rem 1rem; border-radius: 0.7rem; border: 1px solid var(--card-border); background: var(--card-bg); color: var(--text); font-size: 1rem; font-family: inherit; outline: none; transition: border-color .2s, box-shadow .2s; }
+.name-input:focus { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(168,85,247,.15); }
+.name-input::placeholder { color: var(--text-muted); }
+
+/* 게임 */
+.game-panel { padding: 0; position: relative; }
+#fw-canvas { width: 100%; flex: 1; display: block; min-height: 0; }
+.launch-area { width: 100%; padding: 0.8rem 1.5rem 1.2rem; display: flex; align-items: center; gap: 1rem; justify-content: center; background: var(--bg2); border-top: 1px solid var(--card-border); flex-shrink: 0; }
+.remain-badge { padding: 0.35rem 1rem; border-radius: 999px; background: rgba(168,85,247,.15); border: 1px solid rgba(168,85,247,.4); color: var(--neon); font-size: 0.9rem; font-weight: 700; white-space: nowrap; }
+.btn-launch { border: none; border-radius: 0.7rem; padding: 0.75rem 2.5rem; font-size: 1.1rem; font-weight: 800; cursor: pointer; background: linear-gradient(135deg,var(--accent),var(--accent2)); color: #fff; box-shadow: 0 4px 20px rgba(124,58,237,.5); transition: transform .15s, box-shadow .15s, opacity .2s; font-family: inherit; }
+.btn-launch:active { transform: scale(0.96); }
+.btn-launch:disabled { opacity: 0.4; cursor: default; }
+
+/* 결과 오버레이 */
+.result-overlay { position: absolute; inset: 0; z-index: 10; background: rgba(6,6,18,0.70); backdrop-filter: blur(3px); display: flex; flex-direction: column; align-items: center; }
+#result-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.result-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.8rem; flex: 1; justify-content: center; }
+.result-icon { font-size: 4rem; animation: bounce-in 0.5s cubic-bezier(.34,1.56,.64,1); }
+.result-title { font-size: 1.4rem; font-weight: 900; background: linear-gradient(135deg,#fff,var(--neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.loser-name { font-size: 2.4rem; font-weight: 900; color: #fca5a5; text-shadow: 0 0 30px rgba(239,68,68,.6); animation: name-pop 0.6s cubic-bezier(.34,1.56,.64,1) 0.2s both; }
+.result-btns { position: relative; z-index: 2; width: 100%; padding: 0 1.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.7rem; flex-shrink: 0; }
+
+@keyframes bounce-in { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+@keyframes name-pop { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* 공통 버튼 */
+.btn { border: none; border-radius: 0.7rem; padding: 0.8rem 2rem; font-size: 1rem; font-weight: 700; cursor: pointer; transition: transform .15s, box-shadow .15s; max-width: 320px; width: 100%; font-family: inherit; }
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: linear-gradient(135deg,var(--accent),var(--accent2)); color: #fff; box-shadow: 0 4px 16px rgba(124,58,237,.4); }
+.btn-primary:hover { box-shadow: 0 6px 22px rgba(168,85,247,.6); }
+.btn-ghost { background: var(--card-bg); color: var(--text-muted); border: 1px solid var(--card-border); }
+.btn-ghost:hover { color: var(--neon); border-color: var(--accent2); }

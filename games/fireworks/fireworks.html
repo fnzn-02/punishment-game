@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>불꽃 추첨</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <link rel="manifest" href="../../manifest.json">
+  <meta name="theme-color" content="#7c3aed">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="벌칙게임">
+  <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+  <script>if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light')</script>
+  <link rel="stylesheet" href="fireworks.css">
+</head>
+<body>
+<div class="app-wrap">
+  <header class="app-header">
+    <a href="../../index.html" class="home-btn">← 홈</a>
+    <h1>🎆 불꽃 추첨</h1>
+  </header>
+
+  <!-- 설정 -->
+  <div class="panel setup-panel" id="setup-panel">
+    <p class="setup-desc">이름을 입력하고 불꽃을 쏴라<br>마지막 남은 사람이 벌칙!</p>
+    <div class="player-stepper">
+      <button id="btn-dec">−</button>
+      <span id="player-count">4</span>
+      <button id="btn-inc">+</button>
+    </div>
+    <div class="setup-tools">
+      <button class="btn btn-ghost btn-sm" id="batch-btn">📋 일괄입력</button>
+      <button class="btn btn-ghost btn-sm" id="clear-btn">🗑 초기화</button>
+    </div>
+    <div class="name-list" id="name-list"></div>
+    <div class="sound-toggle-row">
+      <span>소리</span>
+      <button class="sound-toggle" id="sound-toggle">🔊 ON</button>
+    </div>
+    <button class="btn btn-primary" id="start-btn">시작!</button>
+  </div>
+
+  <!-- 게임 -->
+  <div class="panel game-panel" id="game-panel" style="display:none">
+    <canvas id="fw-canvas"></canvas>
+    <div class="launch-area">
+      <div class="remain-badge" id="remain-badge"></div>
+      <button class="btn btn-launch" id="launch-btn">🚀 발사!</button>
+    </div>
+    <!-- 결과 오버레이 -->
+    <div class="result-overlay" id="result-panel" style="display:none">
+      <canvas id="result-canvas"></canvas>
+      <div class="result-content">
+        <div class="result-icon">😈</div>
+        <div class="result-title">벌칙자 결정!</div>
+        <div class="loser-name" id="loser-name"></div>
+      </div>
+      <div class="result-btns">
+        <button class="btn btn-primary" id="again-btn">🔄 다시하기</button>
+        <button class="btn btn-ghost" id="rename-btn">👤 이름 바꾸기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="fireworks.js"></script>
+<script src="../../theme.js"></script>
+</body>
+</html>

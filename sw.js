@@ -1,4 +1,4 @@
-const CACHE = 'punishment-game-v3';
+const CACHE = 'punishment-game-v6';
 
 const ASSETS = [
   './',
@@ -15,9 +15,6 @@ const ASSETS = [
   './games/ladder/ladder.html',
   './games/ladder/ladder.css',
   './games/ladder/ladder.js',
-  './games/roulette/roulette.html',
-  './games/roulette/roulette.css',
-  './games/roulette/roulette.js',
   './games/draw/draw.html',
   './games/draw/draw.css',
   './games/draw/draw.js',
@@ -45,6 +42,12 @@ const ASSETS = [
   './games/tictactoe/tictactoe.html',
   './games/tictactoe/tictactoe.css',
   './games/tictactoe/tictactoe.js',
+  './games/fireworks/fireworks.html',
+  './games/fireworks/fireworks.css',
+  './games/fireworks/fireworks.js',
+  './games/bigwheel/bigwheel.html',
+  './games/bigwheel/bigwheel.css',
+  './games/bigwheel/bigwheel.js',
 ];
 
 self.addEventListener('install', e => {
