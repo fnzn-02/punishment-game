@@ -1,4 +1,4 @@
-const CACHE = 'punishment-game-v6';
+const CACHE = 'punishment-game-v7';
 
 const ASSETS = [
   './',
@@ -48,6 +48,9 @@ const ASSETS = [
   './games/bigwheel/bigwheel.html',
   './games/bigwheel/bigwheel.css',
   './games/bigwheel/bigwheel.js',
+  './games/draw2/draw2.html',
+  './games/draw2/draw2.css',
+  './games/draw2/draw2.js',
 ];
 
 self.addEventListener('install', e => {
