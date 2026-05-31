@@ -1,5 +1,5 @@
 // ─── State ────────────────────────────────────────────────────────────────────
-let playerCount = 4, names = [], soundOn = true;
+let playerCount = 2, names = [], soundOn = true;
 let angle = 0, velocity = 0, spinning = false;
 let animId = null, lastTick = null;
 let lastSector = -1;
@@ -58,7 +58,7 @@ function buildInputs() {
   for (let i = 0; i < playerCount; i++) {
     const inp = document.createElement('input');
     inp.className = 'name-input'; inp.type = 'text';
-    inp.placeholder = `플레이어 ${i + 1}`; inp.maxLength = 8;
+    inp.placeholder = `결과 입력`; inp.maxLength = 10;
     inp.value = prev[i] || '';
     nameListEl.appendChild(inp);
   }
@@ -67,7 +67,9 @@ buildInputs();
 
 function startGame() {
   const inputs = nameListEl.querySelectorAll('.name-input');
-  names = Array.from(inputs).map((inp, i) => inp.value.trim() || `플레이어 ${i + 1}`);
+  const vals = Array.from(inputs).map(inp => inp.value.trim());
+  if (vals.some(v => v === '')) { alert('모든 선택지를 입력해주세요!'); return; }
+  names = vals;
   showPanel('game');
   setTimeout(() => { resizeCanvas(); resetWheel(); }, 50);
 }
@@ -267,7 +269,7 @@ function playTick(vel) {
     osc.connect(gain); gain.connect(a.destination);
     osc.type = 'triangle';
     osc.frequency.value = 800 + vel * 200;
-    gain.gain.setValueAtTime(0.3, a.currentTime);
+    gain.gain.setValueAtTime(0.14, a.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, a.currentTime + 0.08);
     osc.start(); osc.stop(a.currentTime + 0.08);
   } catch(e) {}
@@ -282,7 +284,7 @@ function playBoom() {
     const src = a.createBufferSource(), g = a.createGain(), lpf = a.createBiquadFilter();
     lpf.type = 'lowpass'; lpf.frequency.value = 500;
     src.buffer = buf; src.connect(lpf); lpf.connect(g); g.connect(a.destination);
-    g.gain.setValueAtTime(0.25, a.currentTime);
+    g.gain.setValueAtTime(0.12, a.currentTime);
     g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + 0.5);
     src.start();
     for (let i = 0; i < 3; i++) {
@@ -290,7 +292,7 @@ function playBoom() {
       osc.connect(og); og.connect(a.destination);
       osc.frequency.setValueAtTime(400 - i * 80, a.currentTime + i * 0.06);
       osc.frequency.exponentialRampToValueAtTime(60 - i * 10, a.currentTime + 0.4 + i * 0.06);
-      og.gain.setValueAtTime(0.1, a.currentTime + i * 0.06);
+      og.gain.setValueAtTime(0.05, a.currentTime + i * 0.06);
       og.gain.exponentialRampToValueAtTime(0.001, a.currentTime + 0.5 + i * 0.06);
       osc.start(a.currentTime + i * 0.06); osc.stop(a.currentTime + 0.55 + i * 0.06);
     }

@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>룰렛 돌리기</title>
+  <title>제비뽑기</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <link rel="manifest" href="../../manifest.json">
   <meta name="theme-color" content="#7c3aed">
@@ -11,13 +11,13 @@
   <meta name="apple-mobile-web-app-title" content="벌칙게임">
   <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
   <script>if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light')</script>
-  <link rel="stylesheet" href="bigwheel.css">
+  <link rel="stylesheet" href="draw2.css">
 </head>
 <body>
 <div class="app-wrap">
   <header class="app-header">
     <a href="../../index.html" class="home-btn">← 홈</a>
-    <h1>🎡 룰렛 돌리기</h1>
+    <h1>🎟️ 제비뽑기</h1>
   </header>
 
   <!-- 설정 -->
@@ -31,37 +31,51 @@
       <button class="btn btn-ghost btn-sm" id="batch-btn">📋 일괄입력</button>
       <button class="btn btn-ghost btn-sm" id="clear-btn">🗑 초기화</button>
     </div>
-    <div class="name-list" id="name-list"></div>
-    <div class="sound-toggle-row">
-      <span>소리</span>
-      <button class="sound-toggle" id="sound-toggle">🔊 ON</button>
-    </div>
+    <div class="name-list" id="result-list"></div>
     <button class="btn btn-primary" id="start-btn">시작!</button>
   </div>
 
   <!-- 게임 -->
   <div class="panel game-panel" id="game-panel" style="display:none">
-    <canvas id="wheel-canvas"></canvas>
-    <div class="spin-area">
-      <button class="btn btn-spin" id="spin-btn">🎡 SPIN!</button>
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- 결과 로그 (상단) -->
+    <div class="result-log" id="result-log"></div>
+
+    <!-- 뽑힌 제비 표시 (화면 중앙) -->
+    <div class="reveal-stage" id="reveal-stage">
+      <div class="reveal-paper" id="reveal-paper">
+        <div class="rp-inner" id="rp-inner">
+          <div class="rp-face rp-front"></div>
+          <div class="rp-face rp-back" id="rp-back"></div>
+        </div>
+      </div>
     </div>
+
+    <!-- 항아리 + 제비들 -->
+    <div class="jar-scene" id="jar-scene">
+      <div class="fan-wrap" id="fan-wrap"></div>
+      <div class="jar">
+        <div class="jar-rim"></div>
+        <div class="jar-shine"></div>
+      </div>
+    </div>
+
     <!-- 결과 오버레이 -->
     <div class="result-overlay" id="result-panel" style="display:none">
       <canvas id="result-canvas"></canvas>
       <div class="result-content">
-        <div class="result-icon">🎯</div>
-        <div class="result-title">선택됨!</div>
-        <div class="loser-name" id="loser-name"></div>
+        <div class="result-title">결과 총정리</div>
+        <div class="draw-summary" id="draw-summary"></div>
       </div>
       <div class="result-btns">
         <button class="btn btn-primary" id="again-btn">🔄 다시하기</button>
-        <button class="btn btn-ghost" id="rename-btn">🔄 다시 설정</button>
+        <button class="btn btn-ghost" id="rename-btn">👤 이름 바꾸기</button>
       </div>
     </div>
   </div>
 </div>
-
-<script src="bigwheel.js"></script>
+<script src="draw2.js"></script>
 <script src="../../theme.js"></script>
 </body>
 </html>

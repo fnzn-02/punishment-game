@@ -76,7 +76,7 @@ function buildNameInputs() {
     const inp = document.createElement('input');
     inp.className = 'name-input';
     inp.type = 'text';
-    inp.placeholder = `플레이어 ${i + 1} 이름`;
+    inp.placeholder = `결과 입력`;
     inp.maxLength = 8;
     inp.value = prev[i] || '';
     nameListEl.appendChild(inp);
@@ -86,7 +86,9 @@ buildNameInputs();
 
 function startGame() {
   const inputs = nameListEl.querySelectorAll('.name-input');
-  names = Array.from(inputs).map((inp, i) => inp.value.trim() || `플레이어 ${i + 1}`);
+  const vals = Array.from(inputs).map(inp => inp.value.trim());
+  if (vals.some(v => v === '')) { alert('모든 결과를 입력해주세요!'); return; }
+  names = vals;
   showPanel('game');
   resetGame();
 }
@@ -292,7 +294,7 @@ function playWhoosh() {
     osc.type = 'sawtooth';
     osc.frequency.setValueAtTime(200, a.currentTime);
     osc.frequency.linearRampToValueAtTime(800, a.currentTime + 0.6);
-    gain.gain.setValueAtTime(0.15, a.currentTime);
+    gain.gain.setValueAtTime(0.07, a.currentTime);
     gain.gain.linearRampToValueAtTime(0.001, a.currentTime + 0.7);
     osc.start(); osc.stop(a.currentTime + 0.7);
   } catch(e) {}
@@ -307,14 +309,14 @@ function playBoom() {
     const src = a.createBufferSource(), gain = a.createGain(), bpf = a.createBiquadFilter();
     bpf.type = 'lowpass'; bpf.frequency.value = 400;
     src.buffer = buf; src.connect(bpf); bpf.connect(gain); gain.connect(a.destination);
-    gain.gain.setValueAtTime(0.6, a.currentTime);
+    gain.gain.setValueAtTime(0.28, a.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, a.currentTime + 0.4);
     src.start();
     const osc = a.createOscillator(), g2 = a.createGain();
     osc.connect(g2); g2.connect(a.destination);
     osc.frequency.setValueAtTime(600, a.currentTime);
     osc.frequency.exponentialRampToValueAtTime(50, a.currentTime + 0.4);
-    g2.gain.setValueAtTime(0.3, a.currentTime);
+    g2.gain.setValueAtTime(0.14, a.currentTime);
     g2.gain.exponentialRampToValueAtTime(0.001, a.currentTime + 0.4);
     osc.start(); osc.stop(a.currentTime + 0.4);
   } catch(e) {}
@@ -503,7 +505,7 @@ function showLoser() {
 
 function updateBadge() {
   const n = cards.filter(c => c.alive).length;
-  remainBadge.textContent = `남은 인원 ${n}명`;
+  remainBadge.textContent = `${n}개 남음`;
 }
 
 // ─── Result canvas ────────────────────────────────────────────────────────────

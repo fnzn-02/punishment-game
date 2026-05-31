@@ -60,7 +60,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI','Apple
 .result-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.8rem; flex: 1; justify-content: center; }
 .result-icon { font-size: 4rem; animation: bounce-in 0.5s cubic-bezier(.34,1.56,.64,1); }
 .result-title { font-size: 1.4rem; font-weight: 900; background: linear-gradient(135deg,#fff,var(--neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.loser-name { font-size: 2.4rem; font-weight: 900; color: #fca5a5; text-shadow: 0 0 30px rgba(239,68,68,.6); animation: name-pop 0.6s cubic-bezier(.34,1.56,.64,1) 0.2s both; }
+.loser-name { font-size: 2.4rem; font-weight: 900; color: #e9d5ff; text-shadow: 0 0 30px rgba(168,85,247,.7); animation: name-pop 0.6s cubic-bezier(.34,1.56,.64,1) 0.2s both; }
 .result-btns { position: relative; z-index: 2; width: 100%; padding: 0 1.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.7rem; flex-shrink: 0; }
 
 @keyframes bounce-in { 0% { transform: scale(0); } 100% { transform: scale(1); } }

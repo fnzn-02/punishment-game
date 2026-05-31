@@ -70,9 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function playHit(comboLv) {
     const f = 220 + comboLv * 90;
-    tone(f, 0.12, 'square', 0.28);
-    if (comboLv >= 2) setTimeout(() => tone(f * 1.6, 0.1, 'sine', 0.22), 55);
-    if (comboLv >= 4) setTimeout(() => tone(f * 2.2, 0.1, 'sine', 0.18), 110);
+    tone(f, 0.12, 'square', 0.14);
+    if (comboLv >= 2) setTimeout(() => tone(f * 1.6, 0.1, 'sine', 0.11), 55);
+    if (comboLv >= 4) setTimeout(() => tone(f * 2.2, 0.1, 'sine', 0.09), 110);
   }
 
   // --- Player count & time ---
