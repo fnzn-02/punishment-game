@@ -126,9 +126,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="hole-rim"></div>
       `;
       const moleEl = hole.querySelector('.mole');
-      moleEl.addEventListener('pointerdown', e => { e.preventDefault(); onHit(i, e); });
+      hole.addEventListener('pointerdown', e => { e.preventDefault(); onHit(i, e); });
       moleGrid.appendChild(hole);
-      holes.push({ el: hole, moleEl, active: false, hideId: null });
+      holes.push({ el: hole, moleEl, active: false, hideId: null, downAt: 0 });
     }
   }
 
@@ -258,13 +258,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function retract(hole) {
     hole.active = false;
+    hole.downAt = Date.now();
     hole.moleEl.classList.remove('up', 'hit');
   }
 
   function onHit(idx, e) {
     if (!gameActive) return;
     const h = holes[idx];
-    if (!h.active) return;
+    const grace = !h.active && (Date.now() - h.downAt) < 120;
+    if (!h.active && !grace) return;
 
     h.active = false;
     clearTimeout(h.hideId);
