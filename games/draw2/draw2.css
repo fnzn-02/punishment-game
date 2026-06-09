@@ -96,7 +96,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI','Apple
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-bottom: 42%;
+  padding-bottom: 52%;
   z-index: 5;
   pointer-events: none;
   opacity: 0;
