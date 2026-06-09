@@ -233,7 +233,7 @@ function pullSlip(idx) {
 
   // 결과 텍스트로 뒷면 구성
   rpBack.className = 'rp-face rp-back';
-  rpBack.style.cssText = `background:linear-gradient(145deg,${slip.color.hex}15,${slip.color.hex}28);border-color:${slip.color.hex};box-shadow:0 0 50px ${slip.color.hex}55,0 8px 40px rgba(0,0,0,.6)`;
+  rpBack.style.cssText = `background:linear-gradient(145deg,#16103a,${slip.color.hex}66,#1e1040);border-color:${slip.color.hex};box-shadow:0 0 60px ${slip.color.hex}aa,0 8px 40px rgba(0,0,0,.8)`;
   rpBack.innerHTML = `
     <span class="rp-name-text" style="color:${slip.color.hex}">${slip.color.name}</span>
     <div class="rp-divider" style="background:${slip.color.hex}55"></div>
@@ -245,30 +245,35 @@ function pullSlip(idx) {
 
   setTimeout(() => revealPaper.classList.add('open'), 550);
 
-  // 뒤집힌 후 로그 칩 추가
+  // 뒤집힌 후 로그 칩 추가 + 탭 대기
   setTimeout(() => {
     const chip = document.createElement('div');
     chip.className = 'log-chip';
     chip.style.cssText = `border-color:${slip.color.hex}66;background:${slip.color.hex}18`;
     chip.innerHTML = `<span class="log-dot" style="background:${slip.color.hex};box-shadow:0 0 6px ${slip.color.hex}"></span><span style="color:${slip.color.hex};font-weight:800">${slip.color.name}</span><span style="opacity:.5;font-size:.7em;margin:0 3px">→</span><span style="color:#f0f0f8">${slip.result}</span>`;
     resultLog.appendChild(chip);
-  }, 1200);
 
-  // 잠시 보여주다가 다음 차례로
-  setTimeout(() => {
-    revealStage.classList.remove('active');
-    revealPaper.classList.remove('open');
-    pulling = false;
-    pulledCount++;
-    if (pulledCount === slips.length) {
-      setTimeout(() => {
-        if (animId) { cancelAnimationFrame(animId); animId = null; }
-        buildSummary();
-        showPanel('result');
-        startResultAnim();
-      }, 400);
+    const hintEl = document.getElementById('reveal-hint');
+    hintEl.classList.add('show');
+
+    function dismiss() {
+      revealStage.removeEventListener('click', dismiss);
+      hintEl.classList.remove('show');
+      revealStage.classList.remove('active');
+      revealPaper.classList.remove('open');
+      pulling = false;
+      pulledCount++;
+      if (pulledCount === slips.length) {
+        setTimeout(() => {
+          if (animId) { cancelAnimationFrame(animId); animId = null; }
+          buildSummary();
+          showPanel('result');
+          startResultAnim();
+        }, 400);
+      }
     }
-  }, 2200);
+    revealStage.addEventListener('click', dismiss);
+  }, 1200);
 }
 
 // ─── Summary ──────────────────────────────────────────────────────────────────
