@@ -95,8 +95,9 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI','Apple
   inset: 0;
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
-  padding-bottom: 52%;
+  padding-bottom: min(52%, 28vh);
   z-index: 5;
   pointer-events: none;
   opacity: 0;
@@ -273,6 +274,14 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI','Apple
   text-align: center;
   padding: 0 4px;
   word-break: keep-all;
+}
+
+/* 제비가 많아 이름이 안 들어갈 때는 세로쓰기 */
+.fan-wrap.dense .slip-num {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  padding: 6px 0 0;
+  letter-spacing: 1px;
 }
 
 .log-dot {

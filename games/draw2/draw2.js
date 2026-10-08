@@ -45,6 +45,7 @@ document.getElementById('batch-btn').addEventListener('click', () => {
   const val = prompt('결과를 쉼표(,)로 구분해서 입력하세요.');
   if (!val) return;
   const items = val.split(',').map(s => s.trim()).filter(Boolean);
+  if (items.length > 8) alert('결과는 최대 8개까지 입력할 수 있어요. 앞의 8개만 반영됩니다.');
   const count = Math.min(Math.max(items.length, 2), 8);
   playerCount = count;
   playerCountEl.textContent = count;
@@ -65,6 +66,7 @@ document.getElementById('again-btn').addEventListener('click', () => {
 
 document.getElementById('rename-btn').addEventListener('click', () => {
   stopResultAnim();
+  if (animId) { cancelAnimationFrame(animId); animId = null; }
   showPanel('setup');
 });
 
@@ -105,7 +107,7 @@ function resizeBg() {
   bgCanvas.style.width  = gamePanel.clientWidth  + 'px';
   bgCanvas.style.height = gamePanel.clientHeight + 'px';
   bgCtx.scale(dpr, dpr);
-  initStars();
+  if (!stars.length) initStars();
 }
 
 function cw() { return bgCanvas.width  / (window.devicePixelRatio || 1); }
@@ -115,7 +117,7 @@ function initStars() {
   stars = [];
   for (let i = 0; i < 160; i++) {
     stars.push({
-      x: Math.random() * cw(), y: Math.random() * ch(),
+      x: Math.random(), y: Math.random(), // 화면 비율 좌표 (리사이즈해도 유지)
       r: Math.random() * 1.3 + 0.2,
       a: Math.random() * 0.7 + 0.1,
       phase: Math.random() * Math.PI * 2,
@@ -142,8 +144,9 @@ function spawnDust() {
 }
 
 function bgLoop(t) {
+  const w = cw(), h = ch();
   bgCtx.fillStyle = '#060612';
-  bgCtx.fillRect(0, 0, cw(), ch());
+  bgCtx.fillRect(0, 0, w, h);
 
   // Stars
   stars.forEach(s => {
@@ -154,7 +157,7 @@ function bgLoop(t) {
     bgCtx.shadowColor = 'rgba(255,255,255,0.5)';
     bgCtx.shadowBlur = 2;
     bgCtx.beginPath();
-    bgCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    bgCtx.arc(s.x * w, s.y * h, s.r, 0, Math.PI * 2);
     bgCtx.fill();
     bgCtx.restore();
   });
@@ -222,6 +225,21 @@ function renderFan() {
     fanWrap.appendChild(el);
     slip.el = el;
   });
+  updateFanDensity();
+}
+
+// 색 이름이 제비 폭을 넘치면 세로쓰기로 전환
+function updateFanDensity() {
+  fanWrap.classList.remove('dense');
+  const overflow = slips.some(slip => {
+    if (!slip.el) return false;
+    return slip.el.querySelector('.slip-num').offsetWidth > slip.el.clientWidth;
+  });
+  fanWrap.classList.toggle('dense', overflow);
+}
+
+function escapeHtml(str) {
+  return str.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
 function pullSlip(idx) {
@@ -237,7 +255,7 @@ function pullSlip(idx) {
   rpBack.innerHTML = `
     <span class="rp-name-text" style="color:${slip.color.hex}">${slip.color.name}</span>
     <div class="rp-divider" style="background:${slip.color.hex}55"></div>
-    <span class="rp-result-text">${slip.result}</span>
+    <span class="rp-result-text">${escapeHtml(slip.result)}</span>
   `;
 
   revealPaper.classList.remove('open');
@@ -250,7 +268,7 @@ function pullSlip(idx) {
     const chip = document.createElement('div');
     chip.className = 'log-chip';
     chip.style.cssText = `border-color:${slip.color.hex}66;background:${slip.color.hex}18`;
-    chip.innerHTML = `<span class="log-dot" style="background:${slip.color.hex};box-shadow:0 0 6px ${slip.color.hex}"></span><span style="color:${slip.color.hex};font-weight:800">${slip.color.name}</span><span style="opacity:.5;font-size:.7em;margin:0 3px">→</span><span style="color:#f0f0f8">${slip.result}</span>`;
+    chip.innerHTML = `<span class="log-dot" style="background:${slip.color.hex};box-shadow:0 0 6px ${slip.color.hex}"></span><span style="color:${slip.color.hex};font-weight:800">${slip.color.name}</span><span style="opacity:.5;font-size:.7em;margin:0 3px">→</span><span style="color:#f0f0f8">${escapeHtml(slip.result)}</span>`;
     resultLog.appendChild(chip);
 
     const hintEl = document.getElementById('reveal-hint');
@@ -265,7 +283,6 @@ function pullSlip(idx) {
       pulledCount++;
       if (pulledCount === slips.length) {
         setTimeout(() => {
-          if (animId) { cancelAnimationFrame(animId); animId = null; }
           buildSummary();
           showPanel('result');
           startResultAnim();
@@ -288,7 +305,7 @@ function buildSummary() {
       <span class="summary-dot" style="background:${slip.color.hex};box-shadow:0 0 6px ${slip.color.hex}"></span>
       <span class="summary-color-name" style="color:${slip.color.hex}">${slip.color.name}</span>
       <span class="summary-arrow">→</span>
-      <span class="summary-result">${slip.result}</span>
+      <span class="summary-result">${escapeHtml(slip.result)}</span>
     `;
     el.appendChild(row);
   });
@@ -318,15 +335,20 @@ class Particle {
   get dead() { return this.life <= 0; }
 }
 
-function startResultAnim() {
+function resizeResultCanvas() {
   const rc   = document.getElementById('result-canvas');
-  const rctx = rc.getContext('2d');
   const dpr  = window.devicePixelRatio || 1;
   rc.width  = gamePanel.clientWidth  * dpr;
   rc.height = gamePanel.clientHeight * dpr;
   rc.style.width  = gamePanel.clientWidth  + 'px';
   rc.style.height = gamePanel.clientHeight + 'px';
-  rctx.scale(dpr, dpr);
+  rc.getContext('2d').scale(dpr, dpr);
+}
+
+function startResultAnim() {
+  const rc   = document.getElementById('result-canvas');
+  const rctx = rc.getContext('2d');
+  resizeResultCanvas();
   resultParticles = [];
   const colors = ['#c084fc','#fbbf24','#60a5fa','#f472b6','#34d399','#f87171','#fff'];
   let bursts = 0;
@@ -376,5 +398,8 @@ function resetGame() {
 }
 
 window.addEventListener('resize', () => {
-  if (gamePanel.style.display !== 'none') resizeBg();
+  if (gamePanel.style.display === 'none') return;
+  resizeBg();
+  updateFanDensity();
+  if (resultPanel.style.display !== 'none') resizeResultCanvas();
 });
