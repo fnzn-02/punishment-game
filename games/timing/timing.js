@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastTime = null;
   let animFrame = null;
   let phase = 'idle'; // idle | running | done
+  let turnTimer = null;
 
   let TARGET_LEFT = 44;
   let TARGET_RIGHT = 56;
@@ -119,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
       tapSub.textContent = `중앙에서 ${players[currentIdx].deviation}% 벗어남`;
 
       currentIdx++;
-      setTimeout(() => nextTurn(), 1800);
+      turnTimer = setTimeout(() => nextTurn(), 1800);
     }
   });
 
@@ -160,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
       currentIdx = 0;
       players.forEach(p => { p.deviation = null; p.inZone = false; });
       turnBadge.textContent = '🎉 모두 성공! 다시 도전!';
-      setTimeout(() => nextTurn(), 1500);
+      turnTimer = setTimeout(() => nextTurn(), 1500);
       return;
     }
 
@@ -193,6 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function resetToSetup() {
+    clearTimeout(turnTimer);
     stopAnimation();
     phase = 'idle';
     gamePanel.style.display = 'none';

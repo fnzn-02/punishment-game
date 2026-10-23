@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentPlayer = 0;
   let rangeMin   = 1;
   let rangeMax   = 50;
+  let finished   = false;
 
   // 범위 버튼
   document.querySelectorAll('.range-btn').forEach(btn => {
@@ -68,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentPlayer = 0;
     rangeMin = 1;
     rangeMax = maxRange;
+    finished = false;
 
     setupPanel.style.display  = 'none';
     resultPanel.style.display = 'none';
@@ -112,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function handleGuess() {
+    if (finished) return;
     const val = parseInt(guessInput.value);
     if (isNaN(val) || val < 1 || val > maxRange) {
       guessInput.style.borderColor = '#ef4444';
@@ -125,6 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (val === answer) {
       // 정답!
+      finished = true;
       hintArrow.textContent = '🎯';
       hintArrow.className   = 'hint-arrow exact';
       setTimeout(() => showWin(val), 400);
@@ -156,8 +160,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function showWin(val) {
-    // 직전 입력한 플레이어 찾기 (currentPlayer는 이미 넘어간 상태)
-    const winnerIdx = currentPlayer === 0 ? players - 1 : currentPlayer - 1;
+    // 정답을 맞힌 순간에는 차례를 넘기지 않으므로 currentPlayer가 정답자
+    const winnerIdx = currentPlayer;
     const winColor  = PLAYER_COLORS[winnerIdx].text;
 
     answerReveal.textContent = `정답: ${val}`;

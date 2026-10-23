@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentRound = 1;
   let phase = 'idle'; // idle | waiting | ready | done
   let signalTimer = null;
+  let turnTimer = null;
   let signalStart = 0;
 
   // 플레이어 수 조절
@@ -126,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
       reactionSub.textContent = '다시 시도하세요';
       phase = 'penalized';
 
-      setTimeout(() => setPhase('idle'), 1200);
+      turnTimer = setTimeout(() => setPhase('idle'), 1200);
       return;
     }
 
@@ -140,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       currentPlayerIdx++;
 
-      setTimeout(() => {
+      turnTimer = setTimeout(() => {
         nextTurn();
       }, 1500);
     }
@@ -184,6 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function resetToSetup() {
     clearTimeout(signalTimer);
+    clearTimeout(turnTimer);
     phase = 'idle';
     gamePanel.style.display = 'none';
     resultPanel.style.display = 'none';

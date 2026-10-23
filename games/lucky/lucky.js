@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let openedCount = 0;
   let capsuleCount = 0;
   let isAnimating = false;
-
+  let turnTimer = null;
 
   // 플레이어 수 조절
   btnDec.addEventListener('click', () => {
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const activePlayers = players.filter(p => !p.eliminated);
 
-      setTimeout(() => {
+      turnTimer = setTimeout(() => {
         // 게임 종료 조건: 모든 트랩이 열렸거나 한 명만 남음
         const allTrapsFound = [...capsuleGrid.querySelectorAll('.capsule-item.trap')].length >= Math.min(trapCount, capsuleCount);
 
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
       el.textContent = '✅';
       el.classList.add('safe');
 
-      setTimeout(() => {
+      turnTimer = setTimeout(() => {
         advanceTurn();
         isAnimating = false;
       }, 500);
@@ -170,6 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function resetToSetup() {
+    clearTimeout(turnTimer);
     gamePanel.style.display = 'none';
     resultPanel.style.display = 'none';
     setupPanel.style.display = 'flex';

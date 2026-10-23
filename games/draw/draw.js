@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isAnimating = false;
     let finishedPapers = 0;
     let currentPaperZone = null; // 현재 떠 있는 3D 카드를 저장
+    let gameToken = 0; // 리셋될 때마다 증가 (진행 중이던 뽑기 애니메이션 무효화용)
 
     // --- 2. 기본 UI/UX 제어 함수 ---
     function updatePlayerCount(count) {
@@ -89,6 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 3. 게임 로직 및 애니메이션 ---
+    function escapeHtml(str) {
+        return str.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
     function shuffleArray(array) {
         let newArray = [...array];
         for (let i = newArray.length - 1; i > 0; i--) {
@@ -132,6 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function resetGame() {
+        gameToken++;
         isGameStarted = false;
         toggleControls(true);
         startBtn.textContent = '시작하기';
@@ -149,10 +155,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         choicesContainer.innerHTML = '';
         
-        if (currentPaperZone) {
-            currentPaperZone.remove();
-            currentPaperZone = null;
-        }
+        // 뽑는 도중에 리셋해도 떠 있던 카드가 남지 않도록 전부 제거
+        drawAnimationArea.querySelectorAll('.paper-animation-zone').forEach(zone => zone.remove());
+        currentPaperZone = null;
         
         isAnimating = false;
     }
@@ -175,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function handlePaperClick(event) {
         if (isAnimating) return;
         isAnimating = true;
+        const token = gameToken;
 
         // 이전 카드 제거 (새 카드 뜨기 전)
         if (currentPaperZone) {
@@ -185,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const clickedButton = event.currentTarget;
         clickedButton.disabled = true;
 
-        const resultText = clickedButton.dataset.result;
+        const resultText = escapeHtml(clickedButton.dataset.result);
         const colorName = clickedButton.dataset.colorName;
         const paperColor = clickedButton.style.backgroundColor;
 
@@ -203,12 +209,15 @@ document.addEventListener('DOMContentLoaded', () => {
         messageArea.innerHTML = `<span>${colorName} 제비를 뽑고 있습니다...</span>`;
         
         await new Promise(resolve => setTimeout(resolve, 50));
+        if (token !== gameToken) return; // 도중에 리셋됨
         paperZone.classList.add('pull-out');
         await new Promise(resolve => setTimeout(resolve, 800));
+        if (token !== gameToken) return;
         
         paperZone.classList.remove('pull-out');
         paperZone.classList.add('unfold');
         await new Promise(resolve => setTimeout(resolve, 1200));
+        if (token !== gameToken) return;
 
         // 결과 유지
         currentPaperZone = paperZone;
@@ -247,6 +256,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!inputString) return;
 
         const options = inputString.split(',').map(s => s.trim());
+        while (options.length && !options[options.length - 1]) options.pop();
+        if (options.length > 8) alert('결과는 최대 8개까지 입력할 수 있어요. 앞의 8개만 반영됩니다.');
+        if (options.length > currentPlayers) updatePlayerCount(Math.min(options.length, 8));
         inputsContainer.querySelectorAll('input').forEach((input, index) => {
             input.value = options[index] || '';
         });

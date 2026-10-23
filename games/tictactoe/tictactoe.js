@@ -8,6 +8,7 @@ let names = ['', ''];
 let board = [];
 let turn = 0; // 0=X, 1=O
 let gameOver = false;
+let resultTimer = null;
 
 const setupPanel = document.getElementById('setup-panel');
 const gamePanel  = document.getElementById('game-panel');
@@ -24,6 +25,7 @@ document.getElementById('start-btn').addEventListener('click', () => {
 });
 
 document.getElementById('restart-btn').addEventListener('click', () => {
+  clearTimeout(resultTimer);
   setupPanel.style.display = '';
   gamePanel.style.display = 'none';
   resultPanel.style.display = 'none';
@@ -73,13 +75,13 @@ function placeMove(i) {
   if (winLine) {
     gameOver = true;
     winLine.forEach(idx => cells[idx].classList.add(`win-${mark.toLowerCase()}`));
-    setTimeout(() => showResult('win', turn), 400);
+    resultTimer = setTimeout(() => showResult('win', turn), 400);
     return;
   }
 
   if (board.every(v => v !== null)) {
     gameOver = true;
-    setTimeout(() => showResult('draw'), 400);
+    resultTimer = setTimeout(() => showResult('draw'), 400);
     return;
   }
 
@@ -96,6 +98,10 @@ function updateTurnBadge() {
   const sym = turn === 0 ? '✕' : '○';
   turnBadge.className = `turn-badge ${cls}`;
   turnBadge.textContent = `${sym} ${names[turn]}의 차례`;
+}
+
+function escapeHtml(str) {
+  return str.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
 function showResult(type, winnerIdx) {
@@ -116,6 +122,6 @@ function showResult(type, winnerIdx) {
     iconEl.textContent = '🏆';
     titleEl.textContent = `${names[winnerIdx]} 승리!`;
     boxEl.className = 'result-box loser';
-    boxEl.innerHTML = `😈 벌칙자<br><strong>${names[loserIdx]}</strong>`;
+    boxEl.innerHTML = `😈 벌칙자<br><strong>${escapeHtml(names[loserIdx])}</strong>`;
   }
 }

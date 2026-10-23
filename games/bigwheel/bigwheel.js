@@ -29,6 +29,7 @@ document.getElementById('batch-btn').addEventListener('click', () => {
   const val = prompt('이름을 쉼표(,)로 구분해서 입력하세요.\n예: 1,2,3,4');
   if (!val) return;
   const items = val.split(',').map(s => s.trim()).filter(Boolean);
+  if (items.length > 8) alert('결과는 최대 8개까지 입력할 수 있어요. 앞의 8개만 반영됩니다.');
   const count = Math.min(Math.max(items.length, 2), 8);
   playerCount = count;
   playerCountEl.textContent = count;
@@ -49,7 +50,11 @@ soundToggleBtn.addEventListener('click', () => {
 });
 spinBtn.addEventListener('click', doSpin);
 document.getElementById('again-btn').addEventListener('click', () => { stopResultAnim(); resultPanel.style.display = 'none'; resetWheel(); });
-document.getElementById('rename-btn').addEventListener('click', () => { stopResultAnim(); showPanel('setup'); });
+document.getElementById('rename-btn').addEventListener('click', () => {
+  stopResultAnim();
+  if (animId) { cancelAnimationFrame(animId); animId = null; }
+  showPanel('setup');
+});
 
 // ─── Inputs ───────────────────────────────────────────────────────────────────
 function buildInputs() {
@@ -143,10 +148,17 @@ function drawWheel(t) {
     ctx.rotate(Math.PI / 2);
     ctx.fillStyle = '#fff';
     ctx.shadowColor = 'rgba(0,0,0,0.6)'; ctx.shadowBlur = 4;
-    const fontSize = Math.max(11, Math.min(16, 90 / n + 4));
+    let fontSize = Math.max(11, Math.min(16, 90 / n + 4));
     ctx.font = `bold ${fontSize}px "Apple SD Gothic Neo",sans-serif`;
+    // 칸 폭을 넘는 긴 이름은 글자 크기를 줄여서 맞춤
+    const maxTextW = 2 * textR * Math.sin(arc / 2) * 0.82;
+    const textW = ctx.measureText(names[i]).width;
+    if (textW > maxTextW) {
+      fontSize = Math.max(8, fontSize * maxTextW / textW);
+      ctx.font = `bold ${fontSize}px "Apple SD Gothic Neo",sans-serif`;
+    }
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(names[i], 0, 0);
+    ctx.fillText(names[i], 0, 0, maxTextW);
     ctx.restore();
 
     ctx.restore();
@@ -223,7 +235,6 @@ function loop(ts) {
 
     if (velocity < 0.003) {
       velocity = 0; spinning = false;
-      spinBtn.disabled = false;
       onStopped();
     }
   }
@@ -240,7 +251,6 @@ function onStopped() {
 
   playBoom();
   setTimeout(() => {
-    if (animId) { cancelAnimationFrame(animId); animId = null; }
     document.getElementById('loser-name').textContent = names[sector];
     showPanel('result');
     startResultAnim();
@@ -324,13 +334,18 @@ class Particle {
   get dead() { return this.life <= 0; }
 }
 
-function startResultAnim() {
+function resizeResultCanvas() {
   const rc = document.getElementById('result-canvas');
-  const rctx = rc.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
   rc.width = gamePanel.clientWidth * dpr; rc.height = gamePanel.clientHeight * dpr;
   rc.style.width = gamePanel.clientWidth + 'px'; rc.style.height = gamePanel.clientHeight + 'px';
-  rctx.scale(dpr, dpr);
+  rc.getContext('2d').scale(dpr, dpr);
+}
+
+function startResultAnim() {
+  const rc = document.getElementById('result-canvas');
+  const rctx = rc.getContext('2d');
+  resizeResultCanvas();
   resultParticles = [];
   const colors = ['#c084fc','#fbbf24','#60a5fa','#f472b6','#34d399','#f87171','#fff'];
   let bursts = 0;
@@ -375,4 +390,8 @@ function resetWheel() {
   animId = requestAnimationFrame(loop);
 }
 
-window.addEventListener('resize', () => { if (gamePanel.style.display !== 'none') resizeCanvas(); });
+window.addEventListener('resize', () => {
+  if (gamePanel.style.display === 'none') return;
+  resizeCanvas();
+  if (resultPanel.style.display !== 'none') resizeResultCanvas();
+});

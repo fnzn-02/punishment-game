@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentIdx = 0;
   let startTime = null;
   let phase = 'idle'; // idle | running | done
+  let turnTimer = null;
 
   btnDec.addEventListener('click', () => {
     if (playerCount > 2) { playerCount--; playerCountEl.textContent = playerCount; }
@@ -103,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
       targetLabel.textContent = `목표: ${targetSec}초`;
 
       currentIdx++;
-      setTimeout(() => nextTurn(), 2000);
+      turnTimer = setTimeout(() => nextTurn(), 2000);
     }
   });
 
@@ -141,6 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function resetToSetup() {
+    clearTimeout(turnTimer);
     phase = 'idle';
     gamePanel.style.display = 'none';
     resultPanel.style.display = 'none';

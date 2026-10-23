@@ -1,4 +1,4 @@
-const CACHE = 'punishment-game-v10';
+const CACHE = 'punishment-game-v11';
 
 const ASSETS = [
   './',
@@ -69,9 +69,22 @@ self.addEventListener('activate', e => {
   self.clients.claim();
 });
 
-// Cache-first: 캐시에 있으면 캐시, 없으면 네트워크
+// Network-first: 온라인이면 항상 최신 파일을 받아 캐시를 갱신하고,
+// 오프라인이거나 요청이 실패하면 캐시된 파일로 대체한다.
+// (배포할 때마다 CACHE 버전을 올리지 않아도 수정본이 바로 반영됨)
 self.addEventListener('fetch', e => {
+  const req = e.request;
+  if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;
+
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
+    fetch(req, { cache: 'no-cache' })
+      .then(res => {
+        if (res.ok) {
+          const copy = res.clone();
+          caches.open(CACHE).then(cache => cache.put(req, copy));
+        }
+        return res;
+      })
+      .catch(() => caches.match(req).then(cached => cached || Response.error()))
   );
 });

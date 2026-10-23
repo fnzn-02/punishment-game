@@ -276,6 +276,7 @@ body {
   font-size: 1.1rem;
   font-weight: 800;
   line-height: 1.7;
+  white-space: pre-line;
 }
 .result-box.loser {
   background: rgba(239,68,68,0.12);

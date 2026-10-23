@@ -1,5 +1,5 @@
 // ─── State ───────────────────────────────────────────────────────────────────
-let playerCount = 4;
+let playerCount = 2;
 let soundOn = true;
 let names = [];
 let cards = [];      // {name, x, y, w, h, color, opacity, scale, shakeX, shakeTimer, alive}
@@ -39,6 +39,7 @@ document.getElementById('batch-btn').addEventListener('click', () => {
   const val = prompt('이름을 쉼표(,)로 구분해서 입력하세요.\n예: 1,2,3,4');
   if (!val) return;
   const items = val.split(',').map(s => s.trim()).filter(Boolean);
+  if (items.length > 8) alert('결과는 최대 8개까지 입력할 수 있어요. 앞의 8개만 반영됩니다.');
   const count = Math.min(Math.max(items.length, 2), 8);
   playerCount = count;
   playerCountEl.textContent = count;
@@ -65,6 +66,7 @@ document.getElementById('again-btn').addEventListener('click', () => {
 });
 document.getElementById('rename-btn').addEventListener('click', () => {
   stopResultAnim();
+  if (animId) { cancelAnimationFrame(animId); animId = null; }
   showPanel('setup');
 });
 
@@ -102,7 +104,7 @@ function resizeCanvas() {
   canvas.style.width = rect.width + 'px';
   canvas.style.height = (gamePanel.clientHeight - 80) + 'px';
   ctx.scale(dpr, dpr);
-  initStars();
+  if (!stars.length) initStars();
   positionCards();
 }
 
@@ -114,8 +116,8 @@ function initStars() {
   stars = [];
   for (let i = 0; i < 180; i++) {
     stars.push({
-      x: Math.random() * cw(),
-      y: Math.random() * ch(),
+      x: Math.random(), // 화면 비율 좌표 (리사이즈해도 유지)
+      y: Math.random(),
       r: Math.random() * 1.4 + 0.2,
       a: Math.random() * 0.7 + 0.1,
       phase: Math.random() * Math.PI * 2,
@@ -132,15 +134,18 @@ function positionCards() {
   const cols = Math.min(n, n <= 4 ? 2 : 3);
   const rows = Math.ceil(n / cols);
   const gapX = 14, gapY = 14;
-  const totalW = cols * CARD_W + (cols - 1) * gapX;
+  // 좁은 화면에서는 카드 폭을 줄여 화면 안에 들어오게
+  const cardW = Math.min(CARD_W, (cw() - 24 - (cols - 1) * gapX) / cols);
+  const totalW = cols * cardW + (cols - 1) * gapX;
   const totalH = rows * CARD_H + (rows - 1) * gapY;
   const startX = (cw() - totalW) / 2;
   const startY = (ch() - totalH) / 2 - 20;
   alive.forEach((c, i) => {
     const row = Math.floor(i / cols);
     const col = i % cols;
-    const offset = (cols * 2 < n && row === rows - 1) ? ((n % cols === 1 ? (CARD_W + gapX) / 2 : 0)) : 0;
-    c.x = startX + col * (CARD_W + gapX) + CARD_W / 2 + offset;
+    const offset = (cols * 2 < n && row === rows - 1) ? ((n % cols === 1 ? (cardW + gapX) / 2 : 0)) : 0;
+    c.w = cardW;
+    c.x = startX + col * (cardW + gapX) + cardW / 2 + offset;
     c.y = startY + row * (CARD_H + gapY) + CARD_H / 2;
   });
 }
@@ -324,8 +329,9 @@ function playBoom() {
 
 // ─── Draw ─────────────────────────────────────────────────────────────────────
 function drawBg(t) {
+  const w = cw(), h = ch();
   ctx.fillStyle = '#060612';
-  ctx.fillRect(0, 0, cw(), ch());
+  ctx.fillRect(0, 0, w, h);
   // stars
   stars.forEach(s => {
     const a = s.a + Math.sin(t * 0.001 * s.speed + s.phase) * 0.3;
@@ -335,7 +341,7 @@ function drawBg(t) {
     ctx.shadowColor = 'rgba(255,255,255,0.5)';
     ctx.shadowBlur = 2;
     ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.arc(s.x * w, s.y * h, s.r, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
   });
@@ -395,7 +401,7 @@ function drawCards(t) {
     ctx.font = `bold 14px "Apple SD Gothic Neo",sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(card.name, 0, 0);
+    ctx.fillText(card.name, 0, 0, card.w - 16);
     ctx.restore();
   });
 }
@@ -426,8 +432,8 @@ function loop(t) {
     rocket.update();
     rocket.draw(ctx);
     if (rocket.done) {
-      const target = cards.find(c => c.alive && c.name === rocket.targetName);
-      if (target) {
+      const target = rocket.target;
+      if (target && target.alive) {
         playBoom();
         spawnExplosion(target.x, target.y, target.color);
         target.shakeTimer = 80;
@@ -492,12 +498,11 @@ function onLaunch() {
   const target = alive[Math.floor(Math.random() * alive.length)];
   playWhoosh();
   rocket = new Rocket(cw() / 2, ch() + 10, target.x, target.y);
-  rocket.targetName = target.name;
+  rocket.target = target;
 }
 
 function showLoser() {
   const loser = cards.find(c => c.alive);
-  if (animId) { cancelAnimationFrame(animId); animId = null; }
   loserNameEl.textContent = loser ? loser.name : '?';
   showPanel('result');
   startResultAnim();
@@ -509,7 +514,7 @@ function updateBadge() {
 }
 
 // ─── Result canvas ────────────────────────────────────────────────────────────
-function startResultAnim() {
+function resizeResultCanvas() {
   resultCanvas = document.getElementById('result-canvas');
   resultCtx = resultCanvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
@@ -518,6 +523,10 @@ function startResultAnim() {
   resultCanvas.style.width = gamePanel.clientWidth + 'px';
   resultCanvas.style.height = gamePanel.clientHeight + 'px';
   resultCtx.scale(dpr, dpr);
+}
+
+function startResultAnim() {
+  resizeResultCanvas();
   resultParticles = [];
   let launches = 0;
   function launchResult() {
@@ -578,5 +587,7 @@ function resetGame() {
 }
 
 window.addEventListener('resize', () => {
-  if (gamePanel.style.display !== 'none') resizeCanvas();
+  if (gamePanel.style.display === 'none') return;
+  resizeCanvas();
+  if (resultPanel.style.display !== 'none') resizeResultCanvas();
 });

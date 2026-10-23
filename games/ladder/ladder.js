@@ -149,6 +149,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
+    function escapeHtml(str) {
+        return str.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    /** 일괄입력 개수가 현재 인원보다 많으면 인원을 늘림 (최대 10) */
+    function growForBatch(items) {
+        while (items.length && !items[items.length - 1]) items.pop();
+        if (items.length > 10) alert('최대 10개까지 입력할 수 있어요. 앞의 10개만 반영됩니다.');
+        if (items.length > currentPlayers) setupLadder(Math.min(items.length, 10));
+    }
+
     function easeInOutCubic(t){ return t<0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2; }
     
     async function animatePath(path, onUpdate) { 
@@ -253,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const pair = document.createElement('div');
             pair.className = 'pair';
-            pair.innerHTML = `<div>${names[index]}</div> <div>⇢</div> <div>${results[finalIndex]}</div>`;
+            pair.innerHTML = `<div>${escapeHtml(names[index])}</div> <div>⇢</div> <div>${escapeHtml(results[finalIndex])}</div>`;
             outputDiv.appendChild(pair);
             document.querySelectorAll('.bottom-row input')[finalIndex].classList.add('finished');
 
@@ -340,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const pair = document.createElement('div');
                     pair.className = 'pair';
-                    pair.innerHTML = `<div>${names[i]}</div> <div>⇢</div> <div>${results[finalIndex]}</div>`;
+                    pair.innerHTML = `<div>${escapeHtml(names[i])}</div> <div>⇢</div> <div>${escapeHtml(results[finalIndex])}</div>`;
                     outputDiv.appendChild(pair);
                     document.querySelectorAll('.bottom-row input')[finalIndex].classList.add('finished');
                     
@@ -372,6 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const inputString = prompt('참가자 이름을 쉼표(,)로 구분하여 입력하세요.\n예: 유저1,유저2,유저3');
         if (inputString === null || inputString.trim() === '') return;
         const names = inputString.split(',').map(name => name.trim());
+        growForBatch(names);
         const nameInputs = topRow.querySelectorAll('input');
         nameInputs.forEach((input, index) => { if (names[index]) input.value = names[index]; });
     });
@@ -380,6 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const inputString = prompt('결과를 쉼표(,)로 구분하여 입력하세요.\n예: 당첨,꽝,벌칙1,벌칙2,통과');
         if (inputString === null || inputString.trim() === '') return;
         const results = inputString.split(',').map(result => result.trim());
+        growForBatch(results);
         const resultInputs = bottomRow.querySelectorAll('input');
         resultInputs.forEach((input, index) => { if (results[index]) input.value = results[index]; });
     });
