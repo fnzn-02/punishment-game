@@ -240,6 +240,18 @@ header p {
   background: var(--bg2);
 }
 
+/* 홈 헤더: 로고·제목은 화면 정중앙, 테마 토글(theme.js가 붙임)은 오른쪽 위 구석에 고정 */
+.app-header {
+  justify-content: center;
+  position: relative;
+}
+.app-header .theme-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  margin-left: 0;
+}
+
 .home-btn {
   text-decoration: none;
   color: var(--text-muted);
