@@ -98,6 +98,8 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI','Apple
   flex-direction: column;
   justify-content: center;
   padding-bottom: min(52%, 28vh);
+  /* 작은 화면에서 카드가 제비·항아리와 겹쳐 비치지 않도록 뒤를 어둡게 */
+  background: rgba(6, 4, 18, 0.6);
   z-index: 5;
   pointer-events: none;
   opacity: 0;

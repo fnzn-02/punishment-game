@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultMarkers = [];
         finishedIndexes.clear();
         outputDiv.innerHTML = '';
-        if (bottomRow) document.querySelectorAll('.bottom-row input.finished').forEach(el => el.classList.remove('finished'));
+        if (bottomRow) document.querySelectorAll('#bottom-row input.finished').forEach(el => el.classList.remove('finished'));
         if (startRow) document.querySelectorAll('.start-trigger').forEach(btn => btn.disabled = false);
     }
     
@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
             pair.className = 'pair';
             pair.innerHTML = `<div>${escapeHtml(names[index])}</div> <div>⇢</div> <div>${escapeHtml(results[finalIndex])}</div>`;
             outputDiv.appendChild(pair);
-            document.querySelectorAll('.bottom-row input')[finalIndex].classList.add('finished');
+            document.querySelectorAll('#bottom-row input')[finalIndex].classList.add('finished');
 
         } finally {
             animating = false;
@@ -353,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     pair.className = 'pair';
                     pair.innerHTML = `<div>${escapeHtml(names[i])}</div> <div>⇢</div> <div>${escapeHtml(results[finalIndex])}</div>`;
                     outputDiv.appendChild(pair);
-                    document.querySelectorAll('.bottom-row input')[finalIndex].classList.add('finished');
+                    document.querySelectorAll('#bottom-row input')[finalIndex].classList.add('finished');
                     
                     if (i < cols - 1) {
                         await new Promise(res => setTimeout(res, 150));

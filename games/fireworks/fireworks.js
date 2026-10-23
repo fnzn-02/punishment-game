@@ -439,6 +439,8 @@ function loop(t) {
         target.shakeTimer = 80;
         setTimeout(() => { target.exploding = true; }, 120);
         setTimeout(() => {
+          // 프레임이 느려 페이드가 덜 끝났어도 맞은 카드는 확실히 제거 (남은 개수 오판 방지)
+          target.alive = false; target.exploding = false; target.opacity = 0;
           positionCards();
           const aliveCount = cards.filter(c => c.alive).length;
           updateBadge();

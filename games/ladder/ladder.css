@@ -214,7 +214,7 @@ button:disabled { opacity: 0.6; cursor: not-allowed; filter: none; }
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     display: flex; justify-content: space-between;
 }
-.bottom-row input.finished {
+#bottom-row input.finished {
     background: #fffbe6; border-color: #ffe58f; font-weight: bold;
 }
 
